@@ -6,6 +6,7 @@ be run and call the code from other .py files
 import os
 import numpy as np
 import mitsuba
+mitsuba.set_variant('scalar_rgb')
 
 # In the rendering script these import statements came after setting the variant---
 # Maybe that order is required? 
@@ -24,7 +25,6 @@ class Renderer:
 	def load_scene(self, filename):
 		Thread.thread().file_resolver().append(os.path.dirname(filename))
 		self.scene = load_file(filename)
-		
 
 	# Call the scene's integrator to render the loaded scene, store as film	
 	def integrate_scene(self, sensor_choice):
@@ -34,12 +34,13 @@ class Renderer:
 		# consider writing film attribute as list which can store output from multiple sensors
 		self.film = scene.sensors()[sensor_choice].film()
 
-
 	# Write out rendering as OpenEXR file, tonemapped JPG optional
-	def write_film(self, film=self.film, bitmap=False):
+	def write_film(self, film=None, bitmap=False):
+		if film is None:
+			film = self.film
 		film.set_destination_file('camera_output.exr')
 		film.develop()
-		if bitmap=True:
+		if bitmap==True:
 			bmp = film.bitmap(raw=True)
 			bmp.convert(Bitmap.PixelFormat.RGB, Struct.Type.UInt8, srgb_gamma=True).write('camera_output.jpg')
 
