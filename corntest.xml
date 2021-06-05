@@ -1,5 +1,5 @@
 <scene version="2.0.0">
-	    <path value="/Users/adamstreed/Dropbox/work/Ag_AI/simulation/practice"/>
+	    <!-- <path value="/Users/adamstreed/Dropbox/work/Ag_AI/simulation/practice"/> -->
 
 	<integrator type="path">
 		<integer name="max_depth" value="10"/>
@@ -18,7 +18,7 @@
 
 	<!-- corn plant from OBJ file (mistuba docs strongly discourage OBJs) -->
     <shape type="obj">
-    	<string name="filename" value="Corn1.obj"/>
+    	<string name="filename" value="Corn3.obj"/>
     	<transform name="to_world">
     		<!-- translate value="0, -4, 2"/ -->
     		<rotate value="1, 0, 0" angle="-90"/>

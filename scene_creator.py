@@ -1,8 +1,16 @@
 import sys
+import os
+import numpy as np
+import mitsuba
+mitsuba.set_variant('scalar_rgb')
 
 import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 from xml.dom import minidom
+
+from mitsuba.core import Bitmap, Struct, Thread
+from mitsuba.core.xml import load_file
+
 
 class Scene:
 
@@ -98,10 +106,21 @@ def prettify(elem):
 def main():
     scene = Scene()
     scene.addSensor()
-    scene.addSphere((0,0,0), .27, "diffuse", ".9, .9, .9")
+    scene.addSphere((0,1,0), .27, "diffuse", ".9, .9, .9")
     scene.addIrradianceMeter('shape')
     scene.addEmitter()
     print(prettify(scene.scene))
     scene.toxmlFile("test.xml")
+
+    scene = load_file(sys.argv[1]+".xml")
+    sensor = scene.sensors()[0]
+    scene.integrator().render(scene, sensor)
+    film = sensor.film()
+    film.set_destination_file(sys.argv[1]+'.exr')
+    film.develop()
+    img = film.bitmap(raw=True).convert(Bitmap.PixelFormat.RGB, Struct.Type.UInt8, srgb_gamma=True)
+    img.write("test.jpg")
+
+    # print(scene.sensors()[1])
 
 main()

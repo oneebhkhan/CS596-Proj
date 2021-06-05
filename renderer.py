@@ -56,3 +56,8 @@ def get_irradiance(film):
 # Sets the desired mitsuba variant---we don't need anything other than scalar rgb I think
 def set_mitsuba_variant(variant='scalar_rgb'):
 	mitsuba.set_variant(variant)
+
+renderer = Renderer()
+renderer.load_scene("test.xml")
+renderer.integrate_scene()
+renderer.write_film()

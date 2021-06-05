@@ -42,24 +42,24 @@
     </shape>
 	
 	<!-- the "sun" as area emitter attached to sphere -->
-	<!--
-	<shape type="sphere">
-    	<point name="center" x="0" y="0" z="-200"/>
-    	<float name="radius" value="109"/>
+	
+	<!-- <shape type="sphere">
+    	<point name="center" x="0" y="0" z="-10"/>
+    	<float name="radius" value="1"/>
     	<emitter type="area">
     		<spectrum name="radiance" value="2.0"/>
     	</emitter>
     
-	</shape>
-	-->
+	</shape> -->
+	
 	
 	<!-- the "sun" as point emitter -->
-	<!-- 
-	<emitter type="point">
+	
+	<!-- <emitter type="point">
 		<point name ="position" x="0" y="0" z="-10"/>
 		<spectrum name="intensity" value="20.0"/>
-	</emitter>
-	-->
+	</emitter> -->
+	
 	
 	<!-- the sun as directional emitter (this is what we want I think) -->
 	<emitter type="directional">

@@ -16,7 +16,7 @@
     </film>
   </sensor>
   <shape type="sphere">
-    <point name="center" x="0" y="0" z="0"/>
+    <point name="center" x="0" y="1" z="0"/>
     <float name="radius" value="0.27"/>
     <bsdf type="diffuse">
       <rgb name="reflectance" value=".9, .9, .9"/>
