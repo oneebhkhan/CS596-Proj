@@ -121,6 +121,38 @@ def main():
     img = film.bitmap(raw=True).convert(Bitmap.PixelFormat.RGB, Struct.Type.UInt8, srgb_gamma=True)
     img.write("test.jpg")
 
+    RADMETER=1
+
+
+    # call the integrator again for the radmeter, and store its "film" output
+    scene.integrator().render(scene, scene.sensors()[RADMETER])
+    meter = scene.sensors()[RADMETER].film()
+
+    # Write out rendering as high dynamic range OpenEXR file
+    # film.set_destination_file('camera_output.exr')
+    # film.develop()
+
+    # Write out a tonemapped JPG of the same rendering
+    # bmp = film.bitmap(raw=True)
+    # bmp.convert(Bitmap.PixelFormat.RGB, Struct.Type.UInt8, srgb_gamma=True).write('camera_output.jpg')
+
+    # Get linear pixel values from the irradiance meter as a numpy array for further processing
+    # pixel format specified as 'Y' should yield luminance-only values
+    rad = meter.bitmap(raw=True)
+    rad_linear_Y = rad.convert(Bitmap.PixelFormat.Y, Struct.Type.Float32, srgb_gamma=False)
+    rad_np = np.array(rad_linear_Y)
+
+    # outputs for testing/debugging
+    # numpy.savetxt requires 1D or 2D array, hence taking a slice (an RGB image is a 3D array)
+    #print(rad_np.shape)
+    #print(rad_np)
+    #np.savetxt('output.txt', rad_np[:,:,0])
+    print("Total illumination on object is {}.".format(np.sum(rad_np)) )
+
+    # show camera output of scene
+    Image(filename='camera_output.jpg') 
+
+
     # print(scene.sensors()[1])
 
 main()
