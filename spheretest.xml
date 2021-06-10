@@ -20,6 +20,7 @@
     	<bsdf type="diffuse">
     		<rgb name="reflectance" value=".9, .9, .9"/>
     	</bsdf>
+		
     	<!-- irradiance meter attached to moon requires film of 1x1 pixel -->
     	<sensor type="irradiancemeter">
     		<sampler type="stratified">
