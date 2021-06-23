@@ -2,3 +2,4 @@
 *.exr
 *.jpg
 *.png
+.DS_Store
