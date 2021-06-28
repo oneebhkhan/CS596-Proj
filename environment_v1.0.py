@@ -134,7 +134,7 @@ point = occluder.find('point')
 illumination = []
 angle = []
 while(True):
-	for theta in range(0,361,5):
+	for theta in range(0,361,10):
 
 		print(theta)
 		# x_val = math.sqrt(50) * math.cos(math.radians(theta))
@@ -190,7 +190,7 @@ while(True):
 		plt.title("EFFECT OF OCCLUDER ON ILLUMINANCE OF CORN OBJ")
 		plt.xlabel("Angle")
 		plt.xlim([0,380])
-		plt.ylim([150, 700])
+		plt.ylim([0, 700])
 		plt.ylabel("Illuminance")
 		plt.savefig("graph.png")
 		print("\nTotal illumination on object is {}.\n".format(np.sum(rad_np)) )
