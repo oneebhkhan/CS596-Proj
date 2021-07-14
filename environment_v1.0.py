@@ -127,13 +127,17 @@ for item in shape:
 
 emitter = root.find('emitter')
 emitter_vector = emitter.find('vector')
+emitter_irradiance = emitter.find('spectrum')
 
 point = occluder.find('point')
 
 # Move the occluder in a radius
 illumination = []
 angle = []
-while(True):
+irradiance = []
+alpha = 1
+while(alpha):
+	alpha = 0
 	for theta in range(0,361,10):
 
 		print(theta)
@@ -151,7 +155,16 @@ while(True):
 
 		emitter_vector.set('value', str(y_val)+", "+str(z_val)+", 0")
 		# emitter_vector.set('value', "0, "+str(y_val)+", "+str(z_val))
+
+		if theta > 180:
+			irradiance_val = 2 *math.sin(math.radians(-1*theta)) + 1
+			print("IRRAD", irradiance)
+			irradiance.append(irradiance_val)
+			emitter_irradiance.set('value', str(irradiance_val))
+		else:
+			irradiance.append(1)
 		
+
 
 		environmentTree.write('environment.xml')
 
@@ -187,10 +200,12 @@ while(True):
 
 
 		plt.scatter(angle, illumination, color='#44AA99', s=5)
+		plt.scatter(angle, irradiance, color='purple', s=5)
 		plt.title("EFFECT OF OCCLUDER ON ILLUMINANCE OF CORN OBJ")
 		plt.xlabel("Angle")
 		plt.xlim([0,380])
-		plt.ylim([0, 700])
+		plt.ylim([0, 1600])
+		# plt.grid()
 		plt.ylabel("Illuminance")
 		plt.savefig("graph.png")
 		print("\nTotal illumination on object is {}.\n".format(np.sum(rad_np)) )

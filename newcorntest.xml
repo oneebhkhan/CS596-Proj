@@ -1,5 +1,5 @@
 <scene version="2.0.0">
-	    
+	    <path value="/Users/adamstreed/Dropbox/work/Ag_AI/simulation/practice" />
 
 	<integrator type="path">
 		<integer name="max_depth" value="10" />
@@ -10,7 +10,6 @@
         	
         	<lookat origin="-3, 5, -40" target="0, 0, 0" up="0, 1, 0" />
     	</transform>
-		
     	<sampler type="stratified">
     		<integer name="sample_count" value="16" />
     	</sampler>
@@ -18,7 +17,7 @@
 
 	
     <shape type="obj">
-    	<string name="filename" value="Object_Files/Corn3.obj" />
+    	<string name="filename" value="Corn1.obj" />
     	<transform name="to_world">
     		
     		<rotate value="1, 0, 0" angle="-90" />
@@ -33,39 +32,27 @@
     			<integer name="sample_count" value="16" />
     		</sampler>
     		<film type="hdrfilm">
-				
-    			<integer name="width" value="100" />
-    			<integer name="height" value="100" />
+    			<integer name="width" value="1" />
+    			<integer name="height" value="1" />
     			<string name="pixel_format" value="luminance" />
     			<rfilter type="box" />
     		</film>
     	</sensor>
 	</shape>
-
-	<shape type="rectangle">
-		<bsdf type="diffuse" />
-		<transform name="to_world">
-			<rotate x="1" angle="90" />
-			<translate y="0.01" />
-			<scale value="100" />
-			
-    	</transform>
-	</shape>
 	
-	<shape type="sphere" id="occluder">
-    	
-		<point name="center" x="10" y="2" z="-5" />
+	
+	<shape type="sphere">
+    	<point name="center" x="5" y="2" z="-5" />
     	<float name="radius" value="2" />
-		<bsdf type="diffuse">
-			<rgb name="reflectance" value=".9, .9, .9" />
-		</bsdf>
+	<bsdf type="diffuse" />
     </shape>
 	
 
 	
 	<emitter type="directional">
-		<spectrum name="irradiance" value="1.0000000000000004" />
-		<vector name="direction" value="1.0, -2.4492935982947064e-16, 0" /> 
+		<spectrum name="irradiance" value="1.0" />
+		<vector name="direction" value="0, 0, 1" />
 	</emitter>
 		
+	
 </scene>
