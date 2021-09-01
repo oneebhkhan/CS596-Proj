@@ -110,7 +110,7 @@ def prettify(elem):
 	reparsed = minidom.parseString(rough_string)
 	return reparsed.toprettyxml(indent="  ")
 
-environmentTree = ET.parse('environment.xml')
+environmentTree = ET.parse('Environment_Files/environment.xml')
 
 root = environmentTree.getroot()
 
@@ -141,11 +141,6 @@ while(alpha):
 	for theta in range(0,361,10):
 
 		print(theta)
-		# x_val = math.sqrt(50) * math.cos(math.radians(theta))
-		# z_val = math.sqrt(50) * math.sin(math.radians(theta))
-
-		# point.set('x', str(x_val))
-		# point.set('z', str(z_val))
 		
 		y_val = math.sqrt(1) * math.cos(math.radians(theta))
 		z_val = math.sqrt(1) * math.sin(math.radians(theta))
@@ -166,13 +161,13 @@ while(alpha):
 		
 
 
-		environmentTree.write('environment.xml')
+		environmentTree.write('Environment_Files/environment.xml')
 
 		CAMERA = 0
 		RADMETER = 1
 
 		scene = Scene()
-		filename = 'environment.xml'
+		filename = 'Environment_Files/environment.xml'
 		scene = load_file(filename)
 		sensor = scene.sensors()[CAMERA]
 		scene.integrator().render(scene, sensor)
