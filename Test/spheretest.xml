@@ -10,6 +10,9 @@
         		"up" direction is positive y -->
         	<lookat origin="-3, 5, -20" target="0, 0, 0" up="0, 1, 0"/>
     	</transform>
+		<sampler type="stratified">
+    		<integer name="sample_count" value="16"/>
+    	</sampler>
 	</sensor>
 
 	<!-- the "moon" -->
@@ -20,6 +23,7 @@
     	<bsdf type="diffuse">
     		<rgb name="reflectance" value=".9, .9, .9"/>
     	</bsdf>
+		
     	<!-- irradiance meter attached to moon requires film of 1x1 pixel -->
     	<sensor type="irradiancemeter">
     		<sampler type="stratified">
@@ -38,28 +42,28 @@
 	<shape type="sphere">
     	<point name="center" x="0" y="0" z="0"/>
     	<float name="radius" value="1"/>
-	<bsdf type="diffuse"/>
+		<bsdf type="diffuse"/>
     </shape>
 	
 	<!-- the "sun" as area emitter attached to sphere -->
-	<!--
-	<shape type="sphere">
-    	<point name="center" x="0" y="0" z="-200"/>
-    	<float name="radius" value="109"/>
+	
+	<!-- <shape type="sphere">
+    	<point name="center" x="0" y="0" z="-10"/>
+    	<float name="radius" value="1"/>
     	<emitter type="area">
     		<spectrum name="radiance" value="2.0"/>
     	</emitter>
     
-	</shape>
-	-->
+	</shape> -->
+	
 	
 	<!-- the "sun" as point emitter -->
-	<!-- 
-	<emitter type="point">
+	
+	<!-- <emitter type="point">
 		<point name ="position" x="0" y="0" z="-10"/>
 		<spectrum name="intensity" value="20.0"/>
-	</emitter>
-	-->
+	</emitter> -->
+	
 	
 	<!-- the sun as directional emitter (this is what we want I think) -->
 	<emitter type="directional">

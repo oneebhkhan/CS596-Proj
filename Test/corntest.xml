@@ -1,5 +1,5 @@
 <scene version="2.0.0">
-	    <path value="/Users/adamstreed/Dropbox/work/Ag_AI/simulation/practice"/>
+	    <!-- <path value="/Users/adamstreed/Dropbox/work/Ag_AI/simulation/practice"/> -->
 
 	<integrator type="path">
 		<integer name="max_depth" value="10"/>
@@ -11,6 +11,7 @@
         		"up" direction is positive y -->
         	<lookat origin="-3, 5, -40" target="0, 0, 0" up="0, 1, 0"/>
     	</transform>
+		<!-- WHAT DOES STRATIFIED SAMPLER DO? -->
     	<sampler type="stratified">
     		<integer name="sample_count" value="16"/>
     	</sampler>
@@ -18,7 +19,7 @@
 
 	<!-- corn plant from OBJ file (mistuba docs strongly discourage OBJs) -->
     <shape type="obj">
-    	<string name="filename" value="Corn1.obj"/>
+    	<string name="filename" value="Corn3.obj"/>
     	<transform name="to_world">
     		<!-- translate value="0, -4, 2"/ -->
     		<rotate value="1, 0, 0" angle="-90"/>
@@ -33,8 +34,8 @@
     			<integer name="sample_count" value="16"/>
     		</sampler>
     		<film type="hdrfilm">
-    			<integer name="width" value="1"/>
-    			<integer name="height" value="1"/>
+    			<integer name="width" value="100"/>
+    			<integer name="height" value="100"/>
     			<string name = "pixel_format" value="luminance"/>
     			<rfilter type="box"/>
     		</film>
