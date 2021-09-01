@@ -3,7 +3,8 @@ import os
 import numpy as np
 import mitsuba
 import logging
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
 mitsuba.set_variant('scalar_rgb')
 
 import xml.etree.ElementTree as ET
