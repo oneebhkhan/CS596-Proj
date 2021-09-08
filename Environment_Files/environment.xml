@@ -65,7 +65,7 @@
 	
 	<emitter type="directional">
 		<spectrum name="irradiance" value="1.0000000000000004" />
-		<vector name="direction" value="-86.26951574729816, 50.572429768863934, -65.51145539824729" /> 
+		<vector name="direction" value="-63.141851559219354, 77.54422339332253, -68.51557453335096" /> 
 	</emitter>
 		
 </scene>
