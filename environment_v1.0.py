@@ -5,7 +5,9 @@ import mitsuba
 import logging
 # import matplotlib.pyplot as plt
 from matplotlib import pyplot as plt
+from mpl_toolkits import mplot3d
 mitsuba.set_variant('scalar_rgb')
+import datetime 
 
 import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
@@ -13,6 +15,7 @@ from xml.dom import minidom
 from mitsuba.core import Bitmap, Struct, Thread
 from mitsuba.core.xml import load_file
 import math
+from Feature_Libraries.sun_position import sunpos
 ''' 
 GOALS:
 1. Simulate motion of the sun
@@ -137,30 +140,57 @@ illumination = []
 angle = []
 irradiance = []
 alpha = 1
+radius_1, radius_2 = 100, 100
+
+LA_LATITUDE = 34.052235
+LA_LONGITUDE = -118.243683
+x_arr = []
+y_arr = []
+z_arr = []
+az_arr = []
+elev_arr = []
+start_date_time = "2021-09-07"
+color_val = "#0000fe"
+datetime_obj = datetime.datetime.fromisoformat(start_date_time)
+
 while(alpha):
-	alpha = 0
-	for theta in range(0,361,10):
+	
+	alpha = 1
 
-		print(theta)
+	datetime_obj += datetime.timedelta(days=1)
+	color_val = hex(int(color_val[1:], base=16) + 40)
+	color_val = "#"+str(color_val[2:])
+
+	for hour_of_day in range(0,24,1):
+
+		datetime_obj += datetime.timedelta(hours=1)
+
+		az,zen = sunpos(datetime_obj,LA_LATITUDE,LA_LONGITUDE,0)[:2] #discard RA, dec, H
+		#convert zenith to elevation
+		elev = 90 - zen
 		
-		y_val = math.sqrt(1) * math.cos(math.radians(theta))
-		z_val = math.sqrt(1) * math.sin(math.radians(theta))
+		x_val = radius_1 * math.sin(math.radians(az))
+		y_val = radius_1 * math.cos(math.radians(az))
+		z_val = radius_2 * math.sin(math.radians(elev))
 
-		print("Y_VAL", y_val)
-		print("Z_VAL", z_val)
+		x_arr.append(x_val)
+		y_arr.append(y_val)
+		z_arr.append(z_val)
+		az_arr.append(az)
+		elev_arr.append(elev)
 
-		emitter_vector.set('value', str(y_val)+", "+str(z_val)+", 0")
+		emitter_vector.set('value', str(x_val)+", "+str(y_val)+", "+str(z_val))
 		# emitter_vector.set('value', "0, "+str(y_val)+", "+str(z_val))
 
-		if theta > 180:
-			irradiance_val = 2 *math.sin(math.radians(-1*theta)) + 1
-			print("IRRAD", irradiance)
-			irradiance.append(irradiance_val)
-			emitter_irradiance.set('value', str(irradiance_val))
-		else:
-			irradiance.append(1)
-		
 
+		# INCREASING BRIGHTNESS OF SUN AS DAY PROGRESSES
+		# if theta > 180:
+		# 	irradiance_val = 2 *math.sin(math.radians(-1*theta)) + 1
+		# 	print("IRRAD", irradiance)
+		# 	irradiance.append(irradiance_val)
+		# 	emitter_irradiance.set('value', str(irradiance_val))
+		# else:
+		irradiance.append(1)
 
 		environmentTree.write('Environment_Files/environment.xml')
 
@@ -192,17 +222,36 @@ while(alpha):
 		rad_np = np.array(rad_linear_Y)
 
 		illumination.append(np.sum(rad_np))
-		angle.append(theta)
+		angle.append(az)
 
-
+		fig_solar_motion = plt.figure()
 		plt.scatter(angle, illumination, color='#44AA99', s=5)
 		plt.scatter(angle, irradiance, color='purple', s=5)
-		plt.title("EFFECT OF OCCLUDER ON ILLUMINANCE OF CORN OBJ")
-		plt.xlabel("Angle")
-		plt.xlim([0,380])
+		plt.title("ILLUMINANCE OF SUN")
+		plt.xlabel("Azimuth Angle")
+		plt.xlim([0,360])
 		plt.ylim([0, 1600])
 		# plt.grid()
 		plt.ylabel("Illuminance")
-		plt.savefig("graph.png")
+		plt.savefig("Rendered_Files/Graphs/Illuminance_vs_Azimuth.png")
 		print("\nTotal illumination on object is {}.\n".format(np.sum(rad_np)) )
+
+		fig = plt.figure()
+		ax = plt.axes(projection='3d')
+		
+
+		ax.scatter(xs=x_arr, ys=y_arr, zs=z_arr, zdir='z', s=20, c=color_val)
+		
+		ax.set_xticks([-100,-50,0,50,100])
+		ax.set_yticks([-100,-50,0,50,100])
+		ax.set_zticks([-50,-25,0,25,50])
+		ax.axes.set_xlim3d(left=-100, right=100) 
+		ax.axes.set_ylim3d(bottom=-100, top=100) 
+		ax.axes.set_zlim3d(bottom=-75, top=75) 
+		plt.savefig("Rendered_Files/Graphs/Solar_Motion.png")
+
+		# fig, axs = plt.subplots(1, 3)
+		# axs[0,0].scatter()
+
+
 

@@ -1,7 +1,7 @@
 from pylab import *
 #set environment variable NUMBA_DISABLE_JIT = 1 before importing sunposition to disable jit if it negatively impacts performance
 # e.g. import os; os.environ['NUMBA_DISABLE_JIT'] = 1
-from sun_position import sunpos
+from Feature_Libraries.sun_position import sunpos
 from datetime import datetime
 
 #evaluate on a 2 degree grid
@@ -16,15 +16,24 @@ elev = 90 - zen
 #convert azimuth to vectors
 u, v = cos((90-az)*pi/180), sin((90-az)*pi/180)
 #plot
-print(len(u), len(u[0]))
-print(len(v), len(v[0]))
+# print(len(u), len(u[0]))
+# print(len(v), len(v[0]))
 
-# figure()
-# imshow(elev,cmap=cm.CMRmap,origin='lower',vmin=-90,vmax=90,extent=(-180,180,-90,90))
-# s = slice(5,-1,5) # equivalent to 5:-1:5
-# quiver(lon[s],lat[s],u[s,s],v[s,s])
-# contour(lon,lat,elev,[0])
+figure()
+imshow(elev,cmap=cm.CMRmap,origin='lower',vmin=-90,vmax=90,extent=(-180,180,-90,90))
+s = slice(5,-1,5) # equivalent to 5:-1:5
+quiver(lon[s],lat[s],u[s,s],v[s,s])
+contour(lon,lat,elev,[0])
 # cb = colorbar()
 # cb.set_label('Elevation Angle (deg)')
-# gca().set_aspect('equal')
-# xticks(arange(-180,181,45)); yticks(arange(-90,91,45))
+gca().set_aspect('equal')
+xticks(arange(-180,181,45)); yticks(arange(-90,91,45))
+plt.savefig("Test.png")
+
+print("AZIMUTH", az)
+print("ZENITH", zen)
+
+print("TEST")
+la_az,la_zen = sunpos(now,34.052235,-118.243683,0)[:2] #discard RA, dec, H
+print("LA:- AZ:",la_az," ZEN:",la_zen)
+print("NOW:", now)
