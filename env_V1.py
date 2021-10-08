@@ -38,14 +38,6 @@ class Scene:
 		transform = SubElement(sensor, 'transform', {'name':"to_world"})
 		SubElement(transform, 'lookat', {'origin':"-3, 5, -20", 'target': "0, 0, 0", \
 			 'up':"0, 1, 0"})
-		# if translate:
-		#     SubElement(transform, 'translate', {'value': translate})
-		# if rotate_axis and rotate_angle:
-		#     SubElement(transform, 'rotate', {rotate_axis: "1", "angle": rotate_angle})
-		# if scale:
-		#     SubElement(transform, 'scale', {'value': scale})
-
-		# add sampler
 		sampler = SubElement(sensor, 'sampler', {'type': sampler_type})
 		SubElement(sampler, 'integer', {"name":"sample_count", "value":sample_count})
 
@@ -93,8 +85,6 @@ class Scene:
 		emitter = SubElement(self.scene, 'emitter', {'type':type})
 		SubElement(emitter, 'spectrum', {'name':"irradiance", 'value':"1.0"})
 		SubElement(emitter, 'vector', {'name':"direction", 'value':direction})
-
-
 	
 	def addInteger(self, element, name, value):
 		SubElement(element, 'integer', {'name':name, 'value':value})

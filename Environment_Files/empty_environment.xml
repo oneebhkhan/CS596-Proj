@@ -1,0 +1,39 @@
+<scene version="2.0.0">
+	    
+
+	<integrator type="path">
+		<integer name="max_depth" value="10" />
+	</integrator>
+	
+	<sensor type="perspective">
+    	<transform name="to_world">
+        	
+        	<lookat origin="-3, 5, -40" target="0, 0, 0" up="0, 1, 0" />
+    	</transform>
+		
+    	<sampler type="stratified">
+    		<integer name="sample_count" value="16" />
+    	</sampler>
+	</sensor>
+
+	
+
+
+	<shape type="rectangle">
+		<bsdf type="diffuse" />
+		<transform name="to_world">
+			<rotate x="1" angle="90" />
+			<translate y="0.01" />
+			<scale value="100" />
+			
+    	</transform>
+	</shape>
+
+	
+	<emitter type="directional">
+		<spectrum name="irradiance" value="1.0" />
+		<!-- SET CORRECT STARTING FILE -->
+		<vector name="direction" value="-63.141851559219354, 77.54422339332253, -68.51557453335096" /> 
+	</emitter>
+		
+</scene>
