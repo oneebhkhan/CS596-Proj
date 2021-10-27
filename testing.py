@@ -24,11 +24,12 @@ GOALS:
 
 class Scene:
 
-	def __init__(self, version="2.0.0", integrator_type="path", max_depth="10"):
-		self.scene = Element('scene')
-		self.scene.set('version', "2.0.0")
-		integrator = SubElement(self.scene, 'integrator', {'type':integrator_type} )
-		SubElement(integrator, 'integer', {'name':"max_depth", 'value':max_depth})
+	def __init__(self, xml_filepath, version="2.0.0", integrator_type="path", max_depth="10"):
+		self.environment_tree = ET.parse(xml_filepath)
+		self.scene = self.environment_tree.getroot()
+		# self.scene.set('version', "2.0.0")
+		# integrator = SubElement(self.scene, 'integrator', {'type':integrator_type} )
+		# SubElement(integrator, 'integer', {'name':"max_depth", 'value':max_depth})
 
 	def addSensor(self, type="perspective", fov_value="45", translate=None, scale=None, \
 		 rotate_axis="y", rotate_angle="180", sampler_type="independent", sample_count="32"):
@@ -108,140 +109,81 @@ environmentTree = ET.parse('Mitsuba-AG-Agent(r)/Environment_Files/environment.xm
 
 root = environmentTree.getroot()
 
+environmentTree1 = ET.parse('Mitsuba-AG-Agent(r)/Environment_Files/environment.xml')
+
+root1 = environmentTree.getroot()
+
+
 print("Tree", environmentTree)
 print("Root", root)
+print("Tree1", environmentTree1)
+print("Root1", root1)
 
-# Emitter
+scene_obj = Scene(xml_filepath='Mitsuba-AG-Agent(r)/Environment_Files/environment.xml')
 
-shape = root.findall('shape')
-occluder = ""
-for item in shape:
-	if item.attrib.get('id') == 'occluder':
-		occluder = item
-
-emitter = root.find('emitter')
-emitter_vector = emitter.find('vector')
-emitter_irradiance = emitter.find('spectrum')
-
-point = occluder.find('point')
-
-# Move the occluder in a radius
-illumination = []
-angle = []
-irradiance = []
-alpha = 1
-radius_1, radius_2 = 100, 100
-
-LA_LATITUDE = 34.052235
-LA_LONGITUDE = -118.243683
-x_arr = []
-y_arr = []
-z_arr = []
-az_arr = []
-elev_arr = []
-start_date_time = "2021-09-07"
-color_val = "#0000fe"
-datetime_obj = datetime.datetime.fromisoformat(start_date_time)
-
-while(alpha):
-	
-	alpha = 1
-
-	datetime_obj += datetime.timedelta(days=1)
-	color_val = hex(int(color_val[1:], base=16) + 40)
-	color_val = "#"+str(color_val[2:])
-
-	for hour_of_day in range(0,24,1):
-
-		datetime_obj += datetime.timedelta(hours=1)
-
-		az,zen = sunpos(datetime_obj,LA_LATITUDE,LA_LONGITUDE,0)[:2] #discard RA, dec, H
-		#convert zenith to elevation
-		elev = 90 - zen
-		
-		x_val = radius_1 * math.sin(math.radians(az))
-		y_val = radius_1 * math.cos(math.radians(az))
-		z_val = radius_2 * math.sin(math.radians(elev))
-
-		x_arr.append(x_val)
-		y_arr.append(y_val)
-		z_arr.append(z_val)
-		az_arr.append(az)
-		elev_arr.append(elev)
-
-		emitter_vector.set('value', str(x_val)+", "+str(y_val)+", "+str(z_val))
-		# emitter_vector.set('value', "0, "+str(y_val)+", "+str(z_val))
+print(scene_obj.environment_tree)
+print(scene_obj.scene)
 
 
-		# INCREASING BRIGHTNESS OF SUN AS DAY PROGRESSES
-		# if theta > 180:
-		# 	irradiance_val = 2 *math.sin(math.radians(-1*theta)) + 1
-		# 	print("IRRAD", irradiance)
-		# 	irradiance.append(irradiance_val)
-		# 	emitter_irradiance.set('value', str(irradiance_val))
-		# else:
-		irradiance.append(1)
+# # Emitter
 
-		environmentTree.write('Mitsuba-AG-Agent(r)/Environment_Files/environment.xml')
+# shape = root.findall('shape')
+# occluder = ""
+# for item in shape:
+# 	if item.attrib.get('id') == 'occluder':
+# 		occluder = item
 
-		CAMERA = 0
-		RADMETER = 1
+# emitter = root.find('emitter')
+# emitter_vector = emitter.find('vector')
+# emitter_irradiance = emitter.find('spectrum')
 
-		scene = Scene()
-		filename = 'Mitsuba-AG-Agent(r)/Environment_Files/environment.xml'
-		scene = load_file(filename)
-		sensor = scene.sensors()[CAMERA]
-		scene.integrator().render(scene, sensor)
+# point = occluder.find('point')
 
-		film = sensor.film()
-		film.set_destination_file('Rendered_Files/environment.exr')
-		film.develop()
-		img = film.bitmap(raw=True).convert(Bitmap.PixelFormat.RGB, Struct.Type.UInt8, \
-			srgb_gamma=True)
-		# img.write('Rendered_Files/'+filename+'.jpg')
-		img.write('Rendered_Files/environment.jpg')
-		
-		
-		# call the integrator again for the radmeter, and store its "film" output
-		scene.integrator().render(scene, scene.sensors()[RADMETER])
-		meter = scene.sensors()[RADMETER].film()
+# # Move the occluder in a radius
+# illumination = []
+# angle = []
+# irradiance = []
+# alpha = 1
+# radius_1, radius_2 = 100, 100
 
-		rad = meter.bitmap(raw=True)
-		rad_linear_Y = rad.convert(Bitmap.PixelFormat.Y, Struct.Type.Float32, \
-			srgb_gamma=False)
-		rad_np = np.array(rad_linear_Y)
-
-		illumination.append(np.sum(rad_np))
-		angle.append(az)
-
-		fig_solar_motion = plt.figure()
-		plt.scatter(angle, illumination, color='#44AA99', s=5)
-		plt.scatter(angle, irradiance, color='purple', s=5)
-		plt.title("ILLUMINANCE OF SUN")
-		plt.xlabel("Azimuth Angle")
-		plt.xlim([0,360])
-		plt.ylim([0, 1600])
-		# plt.grid()
-		plt.ylabel("Illuminance")
-		plt.savefig("Rendered_Files/Graphs/Illuminance_vs_Azimuth.png")
-		print("\nTotal illumination on object is {}.\n".format(np.sum(rad_np)) )
-
-		fig = plt.figure()
-		ax = plt.axes(projection='3d')
-		
-
-		ax.scatter(xs=x_arr, ys=y_arr, zs=z_arr, zdir='z', s=20, c=color_val)
-		
-		ax.set_xticks([-100,-50,0,50,100])
-		ax.set_yticks([-100,-50,0,50,100])
-		ax.set_zticks([-50,-25,0,25,50])
-		ax.axes.set_xlim3d(left=-100, right=100) 
-		ax.axes.set_ylim3d(bottom=-100, top=100) 
-		ax.axes.set_zlim3d(bottom=-75, top=75) 
-		plt.savefig("Rendered_Files/Graphs/Solar_Motion.png")
-
-		# fig, axs = plt.subplots(1, 3)
-		# axs[0,0].scatter()
+# LA_LATITUDE = 34.052235
+# LA_LONGITUDE = -118.243683
+# x_arr = []
+# y_arr = []
+# z_arr = []
+# az_arr = []
+# elev_arr = []
+# start_date_time = "2021-09-07"
+# color_val = "#0000fe"
+# datetime_obj = datetime.datetime.fromisoformat(start_date_time)
 
 
 
+# CAMERA = 0
+# RADMETER = 1
+
+# scene = Scene()
+# filename = 'Environment_Files/environment.xml'
+# scene = load_file(filename)
+# sensor = scene.sensors()[CAMERA]
+# scene.integrator().render(scene, sensor)
+
+# film = sensor.film()
+# film.set_destination_file('Rendered_Files/environment.exr')
+# film.develop()
+# img = film.bitmap(raw=True).convert(Bitmap.PixelFormat.RGB, Struct.Type.UInt8, \
+# 	srgb_gamma=True)
+# # img.write('Rendered_Files/'+filename+'.jpg')
+# img.write('Rendered_Files/environment.jpg')
+
+
+# # call the integrator again for the radmeter, and store its "film" output
+# scene.integrator().render(scene, scene.sensors()[RADMETER])
+# meter = scene.sensors()[RADMETER].film()
+
+# rad = meter.bitmap(raw=True)
+# rad_linear_Y = rad.convert(Bitmap.PixelFormat.Y, Struct.Type.Float32, \
+# 	srgb_gamma=False)
+# rad_np = np.array(rad_linear_Y)
+
+# print("\nTotal illumination on object is {}.\n".format(np.sum(rad_np)) )

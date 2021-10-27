@@ -2,7 +2,7 @@
 	    
 
 	<integrator type="path">
-		<integer name="max_depth" value="10" />
+		<integer name="max_depth" value="3" />
 	</integrator>
 	
 	<sensor type="perspective">
@@ -52,20 +52,12 @@
     	</transform>
 	</shape>
 	
-	<shape type="sphere" id="occluder">
-    	
-		<point name="center" x="10" y="2" z="-5" />
-    	<float name="radius" value="2" />
-		<bsdf type="diffuse">
-			<rgb name="reflectance" value=".9, .9, .9" />
-		</bsdf>
-    </shape>
 	
 
 	
 	<emitter type="directional">
-		<spectrum name="irradiance" value="1.0000000000000004" />
-		<vector name="direction" value="-63.141851559219354, 77.54422339332253, -68.51557453335096" /> 
+		<spectrum name="irradiance" value="10.0000000000000004" />
+		<vector name="direction" value="-99.9134548420556, -4.159512173863345, 23.741212419706876" /> 
 	</emitter>
 		
 </scene>

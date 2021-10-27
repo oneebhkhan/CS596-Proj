@@ -33,7 +33,7 @@
 	<emitter type="directional">
 		<spectrum name="irradiance" value="1.0" />
 		<!-- SET CORRECT STARTING FILE -->
-		<vector name="direction" value="-63.141851559219354, 77.54422339332253, -68.51557453335096" /> 
+		<vector name="direction" value="1, 0, 1" /> 
 	</emitter>
 		
 </scene>
