@@ -1,8 +1,10 @@
 ---
   # FILEPATHs
-  XML_FILEPATH: 'Environment_Files/environment.xml'
-  EXR_FILEPATH: 'Rendered_Files/environment.exr'
-  JPG_FILEPATH: 'Rendered_Files/environment.jpg'
+  EMPTY_XML_FILEPATH: 'Environment_Files/empty_environment.xml'
+  MODIFIED_XML_FILEPATH: 'Environment_Files/modified_environment.xml'
+  EXR_FILEPATH: 'Rendered_Files/render.exr'
+  JPG_FILEPATH: 'Rendered_Files/render.jpg'
+  PLANT_INFO_FILEPATH: 'Information_Files/plant_info.json'
   
   DAY_SIZE_RESOLUTION: 24
 

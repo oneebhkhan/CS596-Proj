@@ -1,0 +1,21 @@
+[
+	{
+		"Name": "Corn",
+		"Filenames": ["Corn1.obj", "Corn2.obj", "Corn3.obj"], 
+		"Harvest_Age": 120,
+		"Space_Requirement": 10,
+		"Light_Requirement": 10000
+	},
+	{
+		"Name": "Squash",
+		"Harvest_Age": 90,
+		"Space_Requirement": 4,
+		"Light_Requirement": 10000
+	},
+	{
+		"Name": "Maize",
+		"Harvest_Age": 110,
+		"Space_Requirement": 20,
+		"Light_Requirement": 10000
+	}
+]
