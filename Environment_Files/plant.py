@@ -7,5 +7,9 @@ class Plant:
 		self.harvest_age = plant_dict["Harvest_Age"]
 		self.space_requirement = plant_dict["Space_Requirement"]
 		self.incident_light = 0
+		self.stage_name = plant_dict["Filenames"][0]
 		self.light_requirement = plant_dict["Light_Requirement"]
+
+	def plant_grow(self):
+		print("Incident Light:",self.incident_light)
 

@@ -1,41 +1,42 @@
 import sys
 import os
-import numpy as np
-import gym
-import mitsuba
 import logging
 import yaml
+import math
+import datetime 
+import json
 
+import numpy as np
+import gym
 from matplotlib import pyplot as plt
 from mpl_toolkits import mplot3d
-mitsuba.set_variant('scalar_rgb')
-import datetime 
 
+import mitsuba
+mitsuba.set_variant('scalar_rgb')
 from mitsuba.core import Bitmap, Struct, Thread
 from mitsuba.core.xml import load_file
-import math
+
 from Feature_Libraries.sun_position import sunpos
 
 from xml_scene import XML_Scene
 from plant import Plant
 
+
 '''
 PENDING TASKS:
-- USE RELATIVE FILE PATHS
 - FORMAT XML CORRECTLY
-- REMOVE MODIFIED XML FILE WHEN ENV.CLOSE IS CALLED
-- LOAD PLANT OBJECTS FROM FILE
 - CREATE 2D ARRAY REPRESENTATION
 - DESIGN REWARD FUNCTION
-- SEPARATE CLASSES INTO INDIVIDUAL FILES
+- MAKE SURE SUN STARTS AT THE RIGHT POSITION
+- NO RENDERING IF SUN BELOW HORIZON
+DONE - LOAD PLANT OBJECTS FROM FILE
+DONE - USE RELATIVE FILE PATHS
+DONE - REMOVE MODIFIED XML FILE WHEN ENV.CLOSE IS CALLED
+DONE - SEPARATE CLASSES INTO INDIVIDUAL FILES
 DONE - CONTROL GRANULARITY OF DAY
 DONE - INCORPORATE DAY WITHIN STEP FUNCTION
 DONE - USE YAML CONFIG FILE
 '''
-
-
-		
-
 
 
 '''
@@ -45,10 +46,8 @@ class AgroEnv(gym.Env):
 
 	def __init__(self):
 		# super(AgroEnv, self).__init__()
-		self.xml_scene = XML_Scene('Environment_Files/empty_environment.xml')
-		self.mitsuba_scene = None
-		self.curr_step_num = 0
-		self.total_step_num = 365
+		self.dirname = os.path.dirname(__file__)
+		self.empty_environment_path = os.path.join(self.dirname, )
 		
 		with open('configuration.yaml') as configuration_yaml_file:
 			configuration_dict = yaml.full_load(configuration_yaml_file)
@@ -57,10 +56,24 @@ class AgroEnv(gym.Env):
 		self.longitude = configuration_dict["LONGITUDE"]
 		self.elevation = configuration_dict["ELEVATION"]
 		self.time_steps_per_day = configuration_dict["DAY_SIZE_RESOLUTION"]
+		self.empty_environment_path = os.path.join(self.dirname, configuration_dict["EMPTY_XML_FILEPATH"])
+		self.modified_environment_path = os.path.join(self.dirname, configuration_dict["MODIFIED_XML_FILEPATH"])
+		self.exr_environment_path = os.path.join(self.dirname, configuration_dict["EXR_FILEPATH"])
+		self.jpg_environment_path = os.path.join(self.dirname, configuration_dict["JPG_FILEPATH"])
+		self.plant_info_path = os.path.join(self.dirname, configuration_dict["PLANT_INFO_FILEPATH"])
+		self.obj_file_path = os.path.join(self.dirname, configuration_dict["OBJ_FILEPATH"])
 
+		self.xml_scene = XML_Scene(self.empty_environment_path)
+		self.mitsuba_scene = None
+		self.curr_step_num = 0
+		self.total_step_num = 365
 		self.curr_date_time = datetime.datetime.fromisoformat(self.start_date_time)
 
-		self.plant_arr = ["Corn1.obj"]
+		plant_json_file = open(self.plant_info_path)
+		self.plant_info_dict = json.load(plant_json_file)
+
+		self.plant_arr = [] #Array of Plants planted so far
+
 		self.num_plants = 0
 		# Define action and observation space
 		# They must be gym.spaces objects
@@ -85,8 +98,8 @@ class AgroEnv(gym.Env):
 		self.done = False
 
 
-	def close(self) -> None:
-		pass
+	def close(self):
+		os.remove(self.modified_environment_path)
 
 
 	def step(self, action):
@@ -103,8 +116,11 @@ class AgroEnv(gym.Env):
 		self.curr_step_num += 1
 
 		if plant_type:
+			new_plant = Plant(self.plant_info_dict[plant_type - 1], plant_x_loc, plant_y_loc)
+			self.plant_arr.append(new_plant)
 			self.num_plants += 1
-			self.xml_scene.addPlant(species=self.plant_arr[plant_type - 1], translate=str(plant_x_loc) +", " + str(plant_y_loc) +", 0")
+			self.xml_scene.addPlant(species=new_plant.stage_name, translate=str(plant_x_loc) +", " + str(plant_y_loc) +", 0")
+
 
 		emitter_vector = self.xml_scene.scene.find('emitter').find('vector')
 		
@@ -117,12 +133,17 @@ class AgroEnv(gym.Env):
 
 			emitter_vector.set('value', str(x_val)+", "+str(y_val)+", "+str(z_val))
 			
-			self.xml_scene.toxmlFile('Environment_Files/test.xml')
-			self.mitsuba_scene = load_file('Environment_Files/test.xml')
+			self.xml_scene.toxmlFile(self.modified_environment_path)
+			self.mitsuba_scene = load_file(self.modified_environment_path)
 
 			plant_irrad_arr += self.render()
 
-		print("PIA",plant_irrad_arr)
+		#Optimize this portion
+		for plant, incident_light in zip(self.plant_arr, plant_irrad_arr):
+			plant.incident_light += incident_light
+			plant.plant_grow()
+
+		print("PIA", plant_irrad_arr)
 
 
 	def render(self):
@@ -132,12 +153,12 @@ class AgroEnv(gym.Env):
 		self.mitsuba_scene.integrator().render(self.mitsuba_scene, sensor)
 
 		film = sensor.film()
-		film.set_destination_file('Rendered_Files/field.exr')
+		film.set_destination_file(self.exr_environment_path)
 		film.develop()
 		img = film.bitmap(raw=True).convert(Bitmap.PixelFormat.RGB, Struct.Type.UInt8, \
 			srgb_gamma=True)
 		# img.write('Rendered_Files/'+filename+'.jpg')
-		img.write('Rendered_Files/field.jpg')
+		img.write(self.jpg_environment_path)
 
 		plant_irrad_arr =[]
 
