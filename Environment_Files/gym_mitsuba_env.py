@@ -24,11 +24,12 @@ from plant import Plant
 
 '''
 PENDING TASKS:
-- FORMAT XML CORRECTLY
-- CREATE 2D ARRAY REPRESENTATION
+- CREATE 2D ARRAY REPRESENTATION FOR OBSERVATION SPACE
 - DESIGN REWARD FUNCTION
-- MAKE SURE SUN STARTS AT THE RIGHT POSITION
-- NO RENDERING IF SUN BELOW HORIZON
+- LOOK INTO REMOVING COMMAND LINE PROMPTS FROM MITSUBA
+DONE - MAKE SURE SUN STARTS AT THE RIGHT POSITION
+DONE - FORMAT XML CORRECTLY
+DONE - NO RENDERING IF SUN BELOW HORIZON
 DONE - LOAD PLANT OBJECTS FROM FILE
 DONE - USE RELATIVE FILE PATHS
 DONE - REMOVE MODIFIED XML FILE WHEN ENV.CLOSE IS CALLED
@@ -121,7 +122,6 @@ class AgroEnv(gym.Env):
 			self.num_plants += 1
 			self.xml_scene.addPlant(species=new_plant.stage_name, translate=str(plant_x_loc) +", " + str(plant_y_loc) +", 0")
 
-
 		emitter_vector = self.xml_scene.scene.find('emitter').find('vector')
 		
 		day_loop = np.arange(0, 24, 24/self.time_steps_per_day)
@@ -131,19 +131,25 @@ class AgroEnv(gym.Env):
 
 			x_val, y_val, z_val = self.get_sun_coordinates(24/self.time_steps_per_day)
 
-			emitter_vector.set('value', str(x_val)+", "+str(y_val)+", "+str(z_val))
-			
-			self.xml_scene.toxmlFile(self.modified_environment_path)
-			self.mitsuba_scene = load_file(self.modified_environment_path)
+			print("HOUR OF DAY: ", hour_of_day, self.curr_date_time)
+			print("X_VAL", x_val, "Y_VAL", y_val, "Z_VAL", z_val,"\n")
 
-			plant_irrad_arr += self.render()
+			if z_val >= 0:
+
+				emitter_vector.set('value', str(x_val)+", "+str(y_val)+", "+str(z_val))
+				
+				self.xml_scene.toxmlFile(self.modified_environment_path)
+				self.mitsuba_scene = load_file(self.modified_environment_path)
+
+				plant_irrad_arr += self.render()
+			input()
 
 		#Optimize this portion
 		for plant, incident_light in zip(self.plant_arr, plant_irrad_arr):
 			plant.incident_light += incident_light
 			plant.plant_grow()
+		print("\n")
 
-		print("PIA", plant_irrad_arr)
 
 
 	def render(self):
@@ -181,13 +187,18 @@ class AgroEnv(gym.Env):
 	
 	def get_sun_coordinates(self, hours_timedelta):
 		
-		radius_1, radius_2 = 100, 100
+		radius_1, radius_2 = 1, 1
 
 		# self.curr_date_time += datetime.timedelta(days=1)
 		
 		self.curr_date_time += datetime.timedelta(hours=hours_timedelta)
 
-		az, zen = sunpos(self.curr_date_time, self.latitude, self.longitude, self.elevation)[:2] #discard RA, dec, H
+		utc_date_time = self.curr_date_time.astimezone(datetime.timezone.utc)
+
+		# print("CURR TIME: ", self.curr_date_time)
+		print("UTC TIME:", utc_date_time)
+
+		az, zen = sunpos(utc_date_time, self.latitude, self.longitude, self.elevation)[:2] #discard RA, dec, H
 		#convert zenith to elevation
 		elev = 90 - zen
 		
@@ -200,9 +211,13 @@ class AgroEnv(gym.Env):
 	def get_reward(self):
 		pass
 
+if __name__ == "__main__":
 
-NewEnv = AgroEnv()
-NewEnv.step([1,2,1])
-print("\n\n", NewEnv.curr_date_time)
-NewEnv.step([1,10,1])
-print("\n\n", NewEnv.curr_date_time)
+	NewEnv = AgroEnv()
+	# NewEnv.step([1,2,1])
+	# # # print("\n\n", NewEnv.curr_date_time)
+	# NewEnv.step([1,10,1])
+	# # print("\n\n", NewEnv.curr_date_time)
+	for i in range(24):
+		print(i, NewEnv.curr_date_time, NewEnv.get_sun_coordinates(1),"\n")
+		# NewEnv.get_sun_coordinates(1)
