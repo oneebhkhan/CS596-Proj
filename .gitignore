@@ -3,6 +3,5 @@
 *.jpg
 *.png
 .DS_Store
-/__pycache__
-# *.pyc
-Feature_Libraries/__pycache__
+*.pyc
+*__pycache__
