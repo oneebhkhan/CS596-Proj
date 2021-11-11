@@ -5,6 +5,7 @@ import yaml
 import math
 import datetime 
 import json
+import time
 
 import numpy as np
 import gym
@@ -27,6 +28,8 @@ PENDING TASKS:
 - CREATE 2D ARRAY REPRESENTATION FOR OBSERVATION SPACE
 - DESIGN REWARD FUNCTION
 - LOOK INTO REMOVING COMMAND LINE PROMPTS FROM MITSUBA
+- ENSURE CORRECT PLACEMENT OF HORIZON
+DONE - PLOT OUT TIME TAKEN FOR ONE EPISODE
 DONE - MAKE SURE SUN STARTS AT THE RIGHT POSITION
 DONE - FORMAT XML CORRECTLY
 DONE - NO RENDERING IF SUN BELOW HORIZON
@@ -48,7 +51,6 @@ class AgroEnv(gym.Env):
 	def __init__(self):
 		# super(AgroEnv, self).__init__()
 		self.dirname = os.path.dirname(__file__)
-		self.empty_environment_path = os.path.join(self.dirname, )
 		
 		with open('configuration.yaml') as configuration_yaml_file:
 			configuration_dict = yaml.full_load(configuration_yaml_file)
@@ -63,6 +65,7 @@ class AgroEnv(gym.Env):
 		self.jpg_environment_path = os.path.join(self.dirname, configuration_dict["JPG_FILEPATH"])
 		self.plant_info_path = os.path.join(self.dirname, configuration_dict["PLANT_INFO_FILEPATH"])
 		self.obj_file_path = os.path.join(self.dirname, configuration_dict["OBJ_FILEPATH"])
+		self.graph_file_path = os.path.join(self.dirname, configuration_dict["GRAPH_FILEPATH"])
 
 		self.xml_scene = XML_Scene(self.empty_environment_path)
 		self.mitsuba_scene = None
@@ -93,9 +96,10 @@ class AgroEnv(gym.Env):
 		self.xml_scene = XML_Scene('Environment_Files/empty_environment.xml')
 		self.mitsuba_scene = None
 		self.curr_step_num = 0
+		self.num_plants = 0
 
 		self.curr_date_time = datetime.datetime.fromisoformat(self.start_date_time)
-
+		self.plant_arr = []
 		self.done = False
 
 
@@ -103,7 +107,7 @@ class AgroEnv(gym.Env):
 		os.remove(self.modified_environment_path)
 
 
-	def step(self, action):
+	def step(self, action, rendering_bool=True, render_scene=True, irrad_meter_integrator=True):
 		'''
 		1. Take action - i.e. plant object w/ location
 			Update XML File
@@ -122,65 +126,68 @@ class AgroEnv(gym.Env):
 			self.num_plants += 1
 			self.xml_scene.addPlant(species=new_plant.stage_name, translate=str(plant_x_loc) +", " + str(plant_y_loc) +", 0")
 
-		emitter_vector = self.xml_scene.scene.find('emitter').find('vector')
-		
-		day_loop = np.arange(0, 24, 24/self.time_steps_per_day)
-		plant_irrad_arr = np.zeros(self.num_plants) 
+		if rendering_bool:
+			emitter_vector = self.xml_scene.scene.find('emitter').find('vector')
+			
+			day_loop = np.arange(0, 24, 24/self.time_steps_per_day)
+			plant_irrad_arr = np.zeros(self.num_plants) 
 
-		for hour_of_day in day_loop:
+			for hour_of_day in day_loop:
 
-			x_val, y_val, z_val = self.get_sun_coordinates(24/self.time_steps_per_day)
+				x_val, y_val, z_val = self.get_sun_coordinates(24/self.time_steps_per_day)
 
-			print("HOUR OF DAY: ", hour_of_day, self.curr_date_time)
-			print("X_VAL", x_val, "Y_VAL", y_val, "Z_VAL", z_val,"\n")
+				# print("HOUR OF DAY: ", hour_of_day, self.curr_date_time)
+				# print("X_VAL", x_val, "Y_VAL", y_val, "Z_VAL", z_val,"\n")
 
-			if z_val >= 0:
+				if z_val >= 0:
 
-				emitter_vector.set('value', str(x_val)+", "+str(y_val)+", "+str(z_val))
-				
-				self.xml_scene.toxmlFile(self.modified_environment_path)
-				self.mitsuba_scene = load_file(self.modified_environment_path)
+					emitter_vector.set('value', str(x_val)+", "+str(y_val)+", "+str(z_val))
+					
+					self.xml_scene.toxmlFile(self.modified_environment_path)
+					self.mitsuba_scene = load_file(self.modified_environment_path)
 
-				plant_irrad_arr += self.render()
-			input()
-
-		#Optimize this portion
-		for plant, incident_light in zip(self.plant_arr, plant_irrad_arr):
-			plant.incident_light += incident_light
-			plant.plant_grow()
-		print("\n")
-
+					plant_irrad_arr += self.render(render_scene=render_scene, irrad_meter_integrator=irrad_meter_integrator)
+			
+			#Optimize this portion
+			for plant, incident_light in zip(self.plant_arr, plant_irrad_arr):
+				plant.incident_light += incident_light
+				plant.plant_grow()
+		# print("\n")
 
 
-	def render(self):
+
+	def render(self, render_scene=True, irrad_meter_integrator=True):
 		CAMERA = 0
 	
 		sensor = self.mitsuba_scene.sensors()[CAMERA]
 		self.mitsuba_scene.integrator().render(self.mitsuba_scene, sensor)
 
-		film = sensor.film()
-		film.set_destination_file(self.exr_environment_path)
-		film.develop()
-		img = film.bitmap(raw=True).convert(Bitmap.PixelFormat.RGB, Struct.Type.UInt8, \
-			srgb_gamma=True)
-		# img.write('Rendered_Files/'+filename+'.jpg')
-		img.write(self.jpg_environment_path)
+		if render_scene:
+			film = sensor.film()
+			film.set_destination_file(self.exr_environment_path)
+			film.develop()
+			img = film.bitmap(raw=True).convert(Bitmap.PixelFormat.RGB, Struct.Type.UInt8, \
+				srgb_gamma=True)
+			img.write(self.jpg_environment_path)
 
 		plant_irrad_arr =[]
 
-		for PLANT_OBJ_RADMETER in range(1, len(self.mitsuba_scene.sensors())):
-		# call the integrator again for the PLANT_OBJ_RADMETER, and store its "film" output
-			self.mitsuba_scene.integrator().render(self.mitsuba_scene, self.mitsuba_scene.sensors()[PLANT_OBJ_RADMETER])
-			meter = self.mitsuba_scene.sensors()[PLANT_OBJ_RADMETER].film()
+		if irrad_meter_integrator:
+			for PLANT_OBJ_RADMETER in range(1, len(self.mitsuba_scene.sensors())):
+			# call the integrator again for the PLANT_OBJ_RADMETER, and store its "film" output
+				self.mitsuba_scene.integrator().render(self.mitsuba_scene, self.mitsuba_scene.sensors()[PLANT_OBJ_RADMETER])
+				meter = self.mitsuba_scene.sensors()[PLANT_OBJ_RADMETER].film()
 
-			rad = meter.bitmap(raw=True)
-			rad_linear_Y = rad.convert(Bitmap.PixelFormat.Y, Struct.Type.Float32, \
-				srgb_gamma=False)
-			rad_np = np.array(rad_linear_Y)
+				rad = meter.bitmap(raw=True)
+				rad_linear_Y = rad.convert(Bitmap.PixelFormat.Y, Struct.Type.Float32, \
+					srgb_gamma=False)
+				rad_np = np.array(rad_linear_Y)
 
-			curr_plant_irradiance = np.sum(rad_np)
-			
-			plant_irrad_arr.append(curr_plant_irradiance)
+				curr_plant_irradiance = np.sum(rad_np)
+				
+				plant_irrad_arr.append(curr_plant_irradiance)
+		else:
+			plant_irrad_arr = np.zeros(len(self.mitsuba_scene.sensors())-1)
 
 		return plant_irrad_arr
 			
@@ -196,7 +203,7 @@ class AgroEnv(gym.Env):
 		utc_date_time = self.curr_date_time.astimezone(datetime.timezone.utc)
 
 		# print("CURR TIME: ", self.curr_date_time)
-		print("UTC TIME:", utc_date_time)
+		# print("UTC TIME:", utc_date_time)
 
 		az, zen = sunpos(utc_date_time, self.latitude, self.longitude, self.elevation)[:2] #discard RA, dec, H
 		#convert zenith to elevation
@@ -211,13 +218,120 @@ class AgroEnv(gym.Env):
 	def get_reward(self):
 		pass
 
+
+
+def episode_time_test():
+	NewEnv = AgroEnv()
+	time_arr = []
+	step_arr = []
+
+	episode_start_time = time.time()
+	for step in range(365):
+		
+		if step < 180:
+			plant_bool = 1
+			plant_xloc = -step
+			plant_yloc = -step
+		else:
+			plant_bool = 0
+			plant_xloc = step
+			plant_yloc = step
+
+		step_start_time = time.time()
+		NewEnv.step([plant_bool, plant_xloc, plant_yloc])
+		step_end_time = time.time()
+
+		time_arr.append(step_end_time-step_start_time)
+		step_arr.append(step)
+
+		plt.figure(dpi=200)
+		plt.bar(step_arr, time_arr)
+		plt.xlabel("Step Number")
+		plt.ylabel("Time Taken (s)")
+		plt.title("Time Taken per Step in one Training Episode")
+		plt.savefig(NewEnv.graph_file_path + "Time_Taken_Per_Step.png")
+		plt.clf()
+
+	episode_end_time = time.time()
+
+	print("Total Time Taken: ",episode_end_time-episode_start_time, "s")
+
+	plt.close()
+
+def step_time_test():
+	NewEnv = AgroEnv()
+
+	for plant_ind in range(10):
+	
+		NewEnv.step([1,plant_ind, plant_ind], False)
+
+	time_arr = []
+	step_arr = []
+
+	for i in range(2):
+		step_start_time = time.time()
+		NewEnv.step([0,0,0])
+		step_end_time = time.time()
+
+		time_arr.append(step_end_time-step_start_time)
+		step_arr.append("Both"+str(i+1))
+
+	NewEnv.reset()
+
+	for plant_ind in range(10):
+	
+		NewEnv.step([1,plant_ind, plant_ind], False)
+
+	for i in range(2):
+		step_start_time = time.time()
+		NewEnv.step([0,0,0], render_scene=False)
+		step_end_time = time.time()
+
+		time_arr.append(step_end_time-step_start_time)
+		step_arr.append("!Scene"+str(i+1))
+
+	NewEnv.reset()
+
+	for plant_ind in range(10):
+	
+		NewEnv.step([1,plant_ind, plant_ind], False)
+		
+	for i in range(2):
+		step_start_time = time.time()
+		NewEnv.step([0,0,0], irrad_meter_integrator=False)
+		step_end_time = time.time()
+
+		time_arr.append(step_end_time-step_start_time)
+		step_arr.append("!Irrad"+str(i+1))
+
+	NewEnv.reset()
+
+	for plant_ind in range(10):
+	
+		NewEnv.step([1,plant_ind, plant_ind], False)
+
+	for i in range(2):
+		step_start_time = time.time()
+		NewEnv.step([0,0,0], render_scene=False, irrad_meter_integrator=False)
+		step_end_time = time.time()
+
+		time_arr.append(step_end_time-step_start_time)
+		step_arr.append("!Both"+str(i+1))
+		
+	plt.figure(dpi=200, figsize=[6,6])
+
+	plt.bar(step_arr, time_arr,color=['blue', 'blue', 'green', 'green', 'red', 'red', 'black', 'black'])
+	plt.title("Step Time Comparison w/ 10 Plants")
+	plt.xlabel("Step Type")
+	plt.ylabel("Time Taken(s)")
+	plt.savefig(NewEnv.graph_file_path+"step_time_comparison.png")
+	plt.close()
+	
+
+
 if __name__ == "__main__":
 
-	NewEnv = AgroEnv()
-	# NewEnv.step([1,2,1])
-	# # # print("\n\n", NewEnv.curr_date_time)
-	# NewEnv.step([1,10,1])
-	# # print("\n\n", NewEnv.curr_date_time)
-	for i in range(24):
-		print(i, NewEnv.curr_date_time, NewEnv.get_sun_coordinates(1),"\n")
-		# NewEnv.get_sun_coordinates(1)
+	# episode_test()
+	step_time_test()
+	pass
+

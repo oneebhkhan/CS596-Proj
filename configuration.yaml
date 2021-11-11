@@ -6,6 +6,7 @@
   JPG_FILEPATH: '../Rendered_Files/render.jpg'
   PLANT_INFO_FILEPATH: '../Information_Files/plant_info.json'
   OBJ_FILEPATH: '../Object_Files/'
+  GRAPH_FILEPATH: '../Rendered_Files/Graphs/'
   
   DAY_SIZE_RESOLUTION: 24
 

@@ -10,14 +10,6 @@
 			<integer name="sample_count" value="16" />
 		</sampler>
 	</sensor>
-	<shape type="rectangle">
-		<bsdf type="diffuse" />
-		<transform name="to_world">
-			<rotate x="1" angle="90" />
-			<translate y="0.01" />
-			<scale value="100" />
-		</transform>
-	</shape>
 	<emitter type="directional">
 		<spectrum name="irradiance" value="1.0" />
 		<!-- SET CORRECT STARTING FILE -->
