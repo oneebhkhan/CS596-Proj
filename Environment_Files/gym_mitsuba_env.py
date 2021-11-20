@@ -17,6 +17,7 @@ mitsuba.set_variant('scalar_rgb')
 from mitsuba.core import Bitmap, Struct, Thread
 from mitsuba.core.xml import load_file
 
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from Feature_Libraries.sun_position import sunpos
 
 from xml_scene import XML_Scene
@@ -226,7 +227,7 @@ def episode_time_test():
 	step_arr = []
 
 	episode_start_time = time.time()
-	for step in range(365):
+	for step in range(20):
 		
 		if step < 180:
 			plant_bool = 1
@@ -331,7 +332,7 @@ def step_time_test():
 
 if __name__ == "__main__":
 
-	# episode_test()
-	step_time_test()
+	episode_time_test()
+	# step_time_test()
 	pass
 
