@@ -1,12 +1,12 @@
-# mitsuba-ag-agent
+# CS596 Semester Project 
 
-TASKS PENDING:
-- Work on gym.step and gym.get_reward functions
-- Clean up XML file handling in environment_v1.0.py
-- Clarify difference between Illuminance and Irradiance and standardize value
-- Sun Radius value to be correctly set
-- Use YAML file in environment.py
+## Tasks Outlined
+1. Save timing data to .out file
+2. Run on CPU on Discovery Cluster
+3. Look into profiler for python
+4. Multithreading for python
+5. Identify where the code is being run in a parallel way
+	Local m/c 16 threads for mitsuba, EPYC 64 threads for mitsuba
+6. Identify how to visualize information
 
-TASKS COMPLETED
-- Enter start date
-- Create configuration YAML(?) file to set Location (LAT, LON), Date and elevation
+
