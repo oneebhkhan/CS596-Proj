@@ -13,7 +13,7 @@
     </sensor>
     <emitter type="directional">
         <spectrum name="irradiance" value="1.0"/>
-        <vector name="direction" value="0.4227171097694449, -0.9062616868808739, 0.8576277240988347"/>
+        <vector name="direction" value="-0.9070357362284488, -0.42105364646861304, 0.5706922799290467"/>
     </emitter>
     <shape type="obj">
         <string name="filename" value="Object_Files/Corn1.obj"/>
@@ -38,6 +38,168 @@
         <transform name="to_world">
             <rotate angle="-90" value="1, 0, 0"/>
             <translate value="-1, -1, 0"/>
+        </transform>
+        <sensor type="irradiancemeter">
+            <sampler type="stratified">
+                <integer name="sample_count" value="16"/>
+            </sampler>
+            <film type="hdrfilm">
+                <integer name="width" value="100"/>
+                <integer name="height" value="100"/>
+                <string name="pixel_format" value="luminance"/>
+                <rfilter type="box"/>
+            </film>
+        </sensor>
+    </shape>
+    <shape type="obj">
+        <string name="filename" value="Object_Files/Corn1.obj"/>
+        <transform name="to_world">
+            <rotate angle="-90" value="1, 0, 0"/>
+            <translate value="-2, -2, 0"/>
+        </transform>
+        <sensor type="irradiancemeter">
+            <sampler type="stratified">
+                <integer name="sample_count" value="16"/>
+            </sampler>
+            <film type="hdrfilm">
+                <integer name="width" value="100"/>
+                <integer name="height" value="100"/>
+                <string name="pixel_format" value="luminance"/>
+                <rfilter type="box"/>
+            </film>
+        </sensor>
+    </shape>
+    <shape type="obj">
+        <string name="filename" value="Object_Files/Corn1.obj"/>
+        <transform name="to_world">
+            <rotate angle="-90" value="1, 0, 0"/>
+            <translate value="-3, -3, 0"/>
+        </transform>
+        <sensor type="irradiancemeter">
+            <sampler type="stratified">
+                <integer name="sample_count" value="16"/>
+            </sampler>
+            <film type="hdrfilm">
+                <integer name="width" value="100"/>
+                <integer name="height" value="100"/>
+                <string name="pixel_format" value="luminance"/>
+                <rfilter type="box"/>
+            </film>
+        </sensor>
+    </shape>
+    <shape type="obj">
+        <string name="filename" value="Object_Files/Corn1.obj"/>
+        <transform name="to_world">
+            <rotate angle="-90" value="1, 0, 0"/>
+            <translate value="-4, -4, 0"/>
+        </transform>
+        <sensor type="irradiancemeter">
+            <sampler type="stratified">
+                <integer name="sample_count" value="16"/>
+            </sampler>
+            <film type="hdrfilm">
+                <integer name="width" value="100"/>
+                <integer name="height" value="100"/>
+                <string name="pixel_format" value="luminance"/>
+                <rfilter type="box"/>
+            </film>
+        </sensor>
+    </shape>
+    <shape type="obj">
+        <string name="filename" value="Object_Files/Corn1.obj"/>
+        <transform name="to_world">
+            <rotate angle="-90" value="1, 0, 0"/>
+            <translate value="-5, -5, 0"/>
+        </transform>
+        <sensor type="irradiancemeter">
+            <sampler type="stratified">
+                <integer name="sample_count" value="16"/>
+            </sampler>
+            <film type="hdrfilm">
+                <integer name="width" value="100"/>
+                <integer name="height" value="100"/>
+                <string name="pixel_format" value="luminance"/>
+                <rfilter type="box"/>
+            </film>
+        </sensor>
+    </shape>
+    <shape type="obj">
+        <string name="filename" value="Object_Files/Corn1.obj"/>
+        <transform name="to_world">
+            <rotate angle="-90" value="1, 0, 0"/>
+            <translate value="-6, -6, 0"/>
+        </transform>
+        <sensor type="irradiancemeter">
+            <sampler type="stratified">
+                <integer name="sample_count" value="16"/>
+            </sampler>
+            <film type="hdrfilm">
+                <integer name="width" value="100"/>
+                <integer name="height" value="100"/>
+                <string name="pixel_format" value="luminance"/>
+                <rfilter type="box"/>
+            </film>
+        </sensor>
+    </shape>
+    <shape type="obj">
+        <string name="filename" value="Object_Files/Corn1.obj"/>
+        <transform name="to_world">
+            <rotate angle="-90" value="1, 0, 0"/>
+            <translate value="-7, -7, 0"/>
+        </transform>
+        <sensor type="irradiancemeter">
+            <sampler type="stratified">
+                <integer name="sample_count" value="16"/>
+            </sampler>
+            <film type="hdrfilm">
+                <integer name="width" value="100"/>
+                <integer name="height" value="100"/>
+                <string name="pixel_format" value="luminance"/>
+                <rfilter type="box"/>
+            </film>
+        </sensor>
+    </shape>
+    <shape type="obj">
+        <string name="filename" value="Object_Files/Corn1.obj"/>
+        <transform name="to_world">
+            <rotate angle="-90" value="1, 0, 0"/>
+            <translate value="-8, -8, 0"/>
+        </transform>
+        <sensor type="irradiancemeter">
+            <sampler type="stratified">
+                <integer name="sample_count" value="16"/>
+            </sampler>
+            <film type="hdrfilm">
+                <integer name="width" value="100"/>
+                <integer name="height" value="100"/>
+                <string name="pixel_format" value="luminance"/>
+                <rfilter type="box"/>
+            </film>
+        </sensor>
+    </shape>
+    <shape type="obj">
+        <string name="filename" value="Object_Files/Corn1.obj"/>
+        <transform name="to_world">
+            <rotate angle="-90" value="1, 0, 0"/>
+            <translate value="-9, -9, 0"/>
+        </transform>
+        <sensor type="irradiancemeter">
+            <sampler type="stratified">
+                <integer name="sample_count" value="16"/>
+            </sampler>
+            <film type="hdrfilm">
+                <integer name="width" value="100"/>
+                <integer name="height" value="100"/>
+                <string name="pixel_format" value="luminance"/>
+                <rfilter type="box"/>
+            </film>
+        </sensor>
+    </shape>
+    <shape type="obj">
+        <string name="filename" value="Object_Files/Corn1.obj"/>
+        <transform name="to_world">
+            <rotate angle="-90" value="1, 0, 0"/>
+            <translate value="-10, -10, 0"/>
         </transform>
         <sensor type="irradiancemeter">
             <sampler type="stratified">
