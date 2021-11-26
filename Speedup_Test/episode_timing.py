@@ -1,6 +1,7 @@
 import sys
 import os
 import time
+import pickle
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from Environment_Files.gym_mitsuba_env import AgroEnv
 from matplotlib import pyplot as plt
@@ -112,9 +113,28 @@ def step_time_test():
 	plt.savefig(NewEnv.graph_file_path+"step_time_comparison.png")
 	plt.close()
 	
+def plant_test_500():
+	with open('Speedup_Test/test_plant_loc.pickle', 'rb') as handle:
+   		plant_loc_dict = pickle.load(handle)
+
+	x_loc_arr = plant_loc_dict["X_LOC"]
+	y_loc_arr = plant_loc_dict["Y_LOC"]
+
+	test_env = AgroEnv()
+
+	for x_loc, y_loc in zip(plant_loc_dict["X_LOC"], plant_loc_dict["Y_LOC"]):
+		test_env.add_plant_to_scene([1, x_loc, y_loc])
+	
+	start_time = time.time()
+
+	test_env.step([0,0,0])
+
+	print("Time taken: ", time.time()-start_time)
 
 
 if __name__ == "__main__":
 
-	episode_time_test()
+	# episode_time_test()
 	# step_time_test()
+	plant_test_500()
+

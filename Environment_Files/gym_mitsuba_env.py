@@ -108,6 +108,16 @@ class AgroEnv(gym.Env):
 		os.remove(self.modified_environment_path)
 
 
+	def add_plant_to_scene(self, action):
+		plant_type, plant_x_loc, plant_y_loc = action
+
+		if plant_type:
+			new_plant = Plant(self.plant_info_dict[plant_type - 1], plant_x_loc, plant_y_loc)
+			self.plant_arr.append(new_plant)
+			self.num_plants += 1
+			self.xml_scene.addPlant(species=new_plant.stage_name, translate=str(plant_x_loc) +", " + str(plant_y_loc) +", 0")
+
+
 	def step(self, action, rendering_bool=True, render_scene=True, irrad_meter_integrator=True):
 		'''
 		1. Take action - i.e. plant object w/ location
@@ -118,14 +128,10 @@ class AgroEnv(gym.Env):
 		4. Call on reward function to reap reward
 		'''
 
-		plant_type, plant_x_loc, plant_y_loc = action
+		# plant_type, plant_x_loc, plant_y_loc = action
 		self.curr_step_num += 1
 
-		if plant_type:
-			new_plant = Plant(self.plant_info_dict[plant_type - 1], plant_x_loc, plant_y_loc)
-			self.plant_arr.append(new_plant)
-			self.num_plants += 1
-			self.xml_scene.addPlant(species=new_plant.stage_name, translate=str(plant_x_loc) +", " + str(plant_y_loc) +", 0")
+		self.add_plant_to_scene(action)
 
 		if rendering_bool:
 			emitter_vector = self.xml_scene.scene.find('emitter').find('vector')
@@ -154,7 +160,6 @@ class AgroEnv(gym.Env):
 				plant.incident_light += incident_light
 				plant.plant_grow()
 		# print("\n")
-
 
 
 	def render(self, render_scene=True, irrad_meter_integrator=True):
@@ -191,7 +196,7 @@ class AgroEnv(gym.Env):
 			plant_irrad_arr = np.zeros(len(self.mitsuba_scene.sensors())-1)
 
 		return plant_irrad_arr
-			
+						
 	
 	def get_sun_coordinates(self, hours_timedelta):
 		

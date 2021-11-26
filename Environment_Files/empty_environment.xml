@@ -4,7 +4,7 @@
 	</integrator>
 	<sensor type="perspective">
 		<transform name="to_world">
-			<lookat origin="-3, 5, -40" target="0, 0, 0" up="0, 1, 0" />
+			<lookat origin="350, 0, 150" target="0, 0, 0" up="0, 0, 1" />
 		</transform>
 		<sampler type="stratified">
 			<integer name="sample_count" value="16" />
@@ -13,6 +13,12 @@
 	<emitter type="directional">
 		<spectrum name="irradiance" value="1.0" />
 		<!-- SET CORRECT STARTING FILE -->
-		<vector name="direction" value="1, 0, 1" /> 
+		<vector name="direction" value="-0.9991345484205559, -0.04159512173863345, 0.23741212419706875"/>
 	</emitter>
+	<!-- <shape type="rectangle">
+		<bsdf type="diffuse" />
+		<transform name="to_world">
+			<scale value="150" />
+    	</transform>
+	</shape> -->
 </scene>
