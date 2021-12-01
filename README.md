@@ -3,6 +3,7 @@
 We are interested in optimizing the study of computational agroceology by simulating ecosystem and individual plant using Mitsuba, a physics engine that renders the environment and simulates incident light. 
 
 ## Overview
+
 1. [Introduction](#introduction)
 3. [Resources and Platform](#resources-and-platform)
 2. [Work Flow](#work-flow)
@@ -12,6 +13,7 @@ We are interested in optimizing the study of computational agroceology by simula
 7. [Acknowledgement](#acknowledgment)
 
 ## Introduction
+
 We model the growth of plant objects in simulation as a decision-making process and construct the rewards and penalties based of the incident light on plant objects. Our end goal will be to train a plant sowing agent using reinforcement learning (RL) algorithms. 
 
 Rendering and calculation of incident light on one plant object takes approximately 1 second on a 6 cores i7 CPU. As the RL agent sows more plants in the environment, each individual rendering could end up taking 2 or 3 orders of magnitude longer. 
@@ -22,33 +24,55 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 
 ## Resources and Platform
 
+* Python
+	* MPI4Py
+* C++
+* Mitsuba2
+* CARC Discovery 
+
 ## Work Flow
-1. Save timing data to .out file ✅
-2. Run on CPU on Discovery Cluster ✅
-3. Identify how to visualize information ✅
-4. Look into profiler for python ✅
-5. Analyze Profiling Results
-6. Implement  
+
+1. Port to Discovery Cluster ✅
+2. Create test case (field with 500 plants) ✅
+3. Run test case on Discovery-EPYC and Local m/c ✅ 
+4. Identify how to visualize information ✅
+4. Profiler for Python ✅
+5. Profile for C++ (Mitsuba) 🔵
+5. Analyze Profiling Results 🔵
+6. Implement Parallel Programming Techniques 🔵
 
 ## Methods
+
+### Python Parallelization: 
+
+* __Spatial Decomposition__
+* __Multithreading__
+* __Multiprocessing__
+
+### C++ Parallelization: 
+
+* __Multithreading__
+
 
 ## Preliminary Results
 
 ![](animated_field.gif)
 
+![](timing_results.png)
+
 ## Work Distribution
 
 We are a team of three and all works are split equally as follow:
 
-Oneeb: 
+**Oneeb:** Create test case, organize code and work on parallelism in python code.
 
-Iris: Generate results and visualizations in plots. Working on parallelism using MPI4py and multi-threading and processes in python. 
+**Iris:** Generate results and visualizations in plots. Working on parallelism using MPI4py and multi-threading and processes in python. 
 
-Armaghan: 
+**Armaghan:** Profiling Python and C++ Code. Multithreading for Mitsuba.
 
 ## Acknowledgment
 
-Our team is very grateful to Tomek Osinski from CARC who was of great help in setting up the mitsuba library for us on Discovery, a process which turned out to be rather convoluted and complicated.
+Our team is very grateful to **Tomek Osinski** from CARC who was of great help in setting up the mitsuba library for us on Discovery, a process which turned out to be rather convoluted and complicated.
 
 
 
