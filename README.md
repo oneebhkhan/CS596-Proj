@@ -1,4 +1,4 @@
-# Parallel Rendering for In Situ Incident Light Calculation 🌱🌱🌱
+# 🌱 Parallel Rendering for In Situ Incident Light Calculation 🌱
 
 We are interested in optimizing the study of computational agroceology by simulating ecosystem and individual plant using Mitsuba, a physics engine that renders the environment and simulates incident light. 
 
