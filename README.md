@@ -58,7 +58,7 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 
 ![Test Case](animated_field.gif)
 
-![ Preliminary Timing Results](barchart.png)
+![ Preliminary Timing Results](timing_results.png)
 
 ## Work Distribution
 
