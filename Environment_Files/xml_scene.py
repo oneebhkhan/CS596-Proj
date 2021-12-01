@@ -13,7 +13,7 @@ class XML_Scene:
 		plant = SubElement(self.scene, 'shape', {'type':'obj'})
 		SubElement(plant, 'string', {'name': "filename", 'value': "Object_Files/"+str(species)})
 		transform = SubElement(plant, 'transform', {'name':"to_world"})
-		SubElement(transform, 'rotate', {'value':"1, 0, 0", 'angle':"-90"}) # plant should always face up
+		# SubElement(transform, 'rotate', {'value':"1, 0, 0", 'angle':"-90"}) # plant should always face up
 		SubElement(transform, 'translate', {'value': translate})
 		
 		if bsdf_type:
