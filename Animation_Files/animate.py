@@ -1,7 +1,7 @@
 from matplotlib import pyplot as plt
 import numpy as np
 
-plt.figure(dpi=60, figsize=(5,8))
+plt.figure(dpi=1000, figsize=(4,8))
 
 plt.bar(["Local M/C", "Discovery"], [1174, 515], color=["tomato", "orange"])
 plt.ylabel("Time per Step (s)")
@@ -12,5 +12,5 @@ plt.xlabel("Instance")
 plt.title("BASELINE - Rendering w/ 500 Plants")
 plt.legend()
 plt.tight_layout() 
-plt.savefig("timing_results.png")
+plt.savefig("assets/timing_results.png")
 plt.close()
