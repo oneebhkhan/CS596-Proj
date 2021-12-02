@@ -37,9 +37,9 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 - [x] Run test case on Discovery-EPYC and Local m/c ✅ 
 - [x] Identify how to visualize information ✅
 - [x] Profiler for Python ✅
-- [] Profile for C++ (Mitsuba) 🔵
-- [] Analyze Profiling Results 🔵
-- [] Implement Parallel Programming Techniques 🔵
+- [ ] Profile for C++ (Mitsuba) 🔵
+- [ ] Analyze Profiling Results 🔵
+- [ ] Implement Parallel Programming Techniques 🔵
 
 ## Methods
 
