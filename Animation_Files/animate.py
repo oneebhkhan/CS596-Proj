@@ -1,7 +1,7 @@
 from matplotlib import pyplot as plt
 import numpy as np
 
-plt.figure(dpi=1000, figsize=(4,8))
+plt.figure(dpi=1000, figsize=(6,8))
 
 plt.bar(["Local M/C", "Discovery"], [1174, 515], color=["tomato", "orange"])
 plt.ylabel("Time per Step (s)")
