@@ -63,6 +63,8 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 	</p>
 </div>
 
+<div>
+
 ## Work Distribution
 
 We are a team of three and all works are split equally as follow:
@@ -76,6 +78,8 @@ We are a team of three and all works are split equally as follow:
 ## Acknowledgment
 
 Our team is very grateful to **Tomek Osinski** from CARC who was of great help in setting up the mitsuba library for us on Discovery, a process which turned out to be rather convoluted and complicated.
+
+</div>
 
 
 
