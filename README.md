@@ -57,10 +57,10 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 ## Preliminary Results
 
 <div style="display: inline">
-	<div style="width:50%; display: inline-block; float:left; margin-right: 10px;">
+	<div style="display: inline-block; float:left; margin-right: 10px;">
 		<img src="assets/animated_field.gif" alt="animation" width="300"/>
 	</div>
-	<div style="width: 40%; display: inline-block; border: 1px solid red">
+	<div style="display: inline-block; border: 1px solid red">
 		<img src="assets/timing_results.png" alt="timing data" width="250"/>
 	</div>
 </div>
