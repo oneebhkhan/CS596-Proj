@@ -32,14 +32,14 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 
 ## Work Flow
 
-- [x] Port to Discovery Cluster ✅
-- [x] Create test case (field with 500 plants) ✅
-- [x] Run test case on Discovery-EPYC and Local m/c ✅ 
-- [x] Identify how to visualize information ✅
-- [x] Profiler for Python ✅
-- [ ] Profile for C++ (Mitsuba) 🔵
-- [ ] Analyze Profiling Results 🔵
-- [ ] Implement Parallel Programming Techniques 🔵
+- [x] Port to Discovery Cluster 
+- [x] Create test case (field with 500 plants) 
+- [x] Run test case on Discovery-EPYC and Local m/c 
+- [x] Identify how to visualize information 
+- [x] Profiler for Python 
+- [ ] Profile for C++ (Mitsuba) 
+- [ ] Analyze Profiling Results 
+- [ ] Implement Parallel Programming Techniques 
 
 ## Methods
 
@@ -58,7 +58,8 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 
 ![Test Case](assets/animated_field.gif)
 
-![ Preliminary Timing Results](assets/timing_results.png)
+<!-- ![ Preliminary Timing Results](assets/timing_results.png) -->
+<img src="assets/timing_results.png" alt="timing data" width="200"/>
 
 ## Work Distribution
 
