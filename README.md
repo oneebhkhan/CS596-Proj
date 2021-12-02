@@ -57,7 +57,8 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 ## Preliminary Results
 
 <p float="left">
-<img src="assets/animated_field.gif" alt="animation" width="500" style="padding-right: 20px; padding left: 20px;"/>
+<img src="assets/animated_field.gif" alt="animation" width="500" />
+<img src="" width="10">
 <img src="assets/timing_results.png" alt="timing data" width="250"/>
 </p>
 
