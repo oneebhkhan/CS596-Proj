@@ -58,7 +58,7 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 
 
 <p float="left">
-<div style="padding-right:50px;" >
+<div>
 <img src="assets/animated_field.gif" alt="animation" width="200" />
 </div>
 <div>
