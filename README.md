@@ -61,7 +61,7 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 	<img align="right" src="assets/timing_results.png" alt="timing data" width="300"/>
 </p>
 
-<br />
+<br height="400"/>
 <br />
 <br />
 <br />
