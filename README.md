@@ -57,11 +57,10 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 ## Preliminary Results
 
 <p float="left">
-<!-- ![Test Case](assets/animated_field.gif) -->
-<img src="assets/animated_field.gif" alt="animation" width="400"/>
-<!-- ![ Preliminary Timing Results](assets/timing_results.png) -->
+<img src="assets/animated_field.gif" alt="animation" width="600"/>
 <img src="assets/timing_results.png" alt="timing data" width="300"/>
 </p>
+
 ## Work Distribution
 
 We are a team of three and all works are split equally as follow:
