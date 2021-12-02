@@ -6,7 +6,7 @@ We are interested in optimizing the study of computational agroceology by simula
 
 1. [Introduction](#introduction)
 3. [Resources and Platform](#resources-and-platform)
-2. [Work Flow](#work-flow)
+2. [Task](#tasks)
 4. [Methods](#methods)
 5. [Preliminary Results](#prelimary-results)
 6. [Work Distribution](#work-distribution)
