@@ -30,10 +30,11 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 * Mitsuba2
 * CARC Discovery 
 
-## Work Flow
+## Tasks
 
 - [x] Port to Discovery Cluster 
-- [x] Create test case (field with 500 plants) 
+- [x] Create test case (field with 500 plants)
+	- [ ] Correct GIF w/ white background
 - [x] Run test case on Discovery-EPYC and Local m/c 
 - [x] Identify how to visualize information 
 - [x] Profiler for Python 
