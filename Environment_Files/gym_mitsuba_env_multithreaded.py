@@ -6,6 +6,10 @@ import math
 import datetime 
 import json
 import time
+# from concurrent.futures import ThreadPoolExecutor
+import threading
+import logging
+# import concurrent.futures.Executor
 
 import numpy as np
 import gym
@@ -14,7 +18,7 @@ from mpl_toolkits import mplot3d
 
 import mitsuba
 mitsuba.set_variant('scalar_rgb')
-from mitsuba.core import Bitmap, Struct, Thread
+from mitsuba.core import Bitmap, Struct, Thread, Logger, LogLevel
 from mitsuba.core.xml import load_file
  
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
@@ -23,6 +27,12 @@ from Feature_Libraries.sun_position import sunpos
 from Environment_Files.xml_scene import XML_Scene
 from Environment_Files.plant import Plant
 
+# TODO: Join threads when returning	
+# TODO: Ensure there is no segmentation fault
+#// TODO: Determine time without printing logging information
+# TODO: Iterate over a different amount of threads and see which works best
+# TODO: mitsuba.set_variant('gpu_rgb')
+# TODO: Run multithreaded instance on local m/c
 
 '''
 PENDING TASKS:
@@ -42,7 +52,6 @@ DONE - CONTROL GRANULARITY OF DAY
 DONE - INCORPORATE DAY WITHIN STEP FUNCTION
 DONE - USE YAML CONFIG FILE
 '''
-
 
 '''
 * Save nn.torch.seed
@@ -81,6 +90,8 @@ class AgroEnv(gym.Env):
 
 		self.num_plants = 0
 
+		self.plant_irrad_dict = dict()
+		self.mitsuba_threads = list()
 		# Define action and observation space
 		# They must be gym.spaces objects
 		self.action_space = []
@@ -128,7 +139,8 @@ class AgroEnv(gym.Env):
 		- 
 		4. Call on reward function to reap reward
 		'''
-
+		Thread.thread().logger().set_log_level(LogLevel.Info)
+		
 		# plant_type, plant_x_loc, plant_y_loc = action
 		self.curr_step_num += 1
 
@@ -143,6 +155,9 @@ class AgroEnv(gym.Env):
 
 				x_val, y_val, z_val = self.get_sun_coordinates(24/self.time_steps_per_day)
 
+				# print("HOUR OF DAY: ", hour_of_day, self.curr_date_time)
+				# print("X_VAL", x_val, "Y_VAL", y_val, "Z_VAL", z_val,"\n")
+
 				if z_val >= 0:
 
 					emitter_vector.set('value', str(x_val)+", "+str(y_val)+", "+str(z_val))
@@ -151,7 +166,7 @@ class AgroEnv(gym.Env):
 					self.mitsuba_scene = load_file(self.modified_environment_path)
 
 					plant_irrad_arr += self.render()
-
+			
 			#Optimize this portion
 			for plant, incident_light in zip(self.plant_arr, plant_irrad_arr):
 				plant.incident_light += incident_light
@@ -174,33 +189,60 @@ class AgroEnv(gym.Env):
 
 		plant_irrad_arr =[]
 		
+		#* INTRODUCE MULTI THREADING HERE
 		if irrad_meter_integrator:
+			python_threads = list()
+			
+			mainThread = Thread.thread()
+			saved_fresolver = mainThread.file_resolver()
+			saved_logger = mainThread.logger()
+			# print("Main Thread ID:", Thread.thread_id())
+			# input()
+			
+			# for RADMETER_INDEX in range(1, 5):
 			for RADMETER_INDEX in range(1, len(self.mitsuba_scene.sensors())):
+				# call the integrator again for the RADMETER_INDEX, and store its "film" output
+				x = threading.Thread(target=self.worker_func, args=(RADMETER_INDEX, saved_fresolver, saved_logger))
+				python_threads.append(x)
+				x.daemon = True
+				x.start()
 				
-				self.mitsuba_scene.integrator().render(self.mitsuba_scene, self.mitsuba_scene.sensors()[RADMETER_INDEX])
-				meter = self.mitsuba_scene.sensors()[RADMETER_INDEX].film()
 
-				rad = meter.bitmap(raw=True)
-				rad_linear_Y = rad.convert(Bitmap.PixelFormat.Y, Struct.Type.Float32, \
-					srgb_gamma=False)
-				rad_np = np.array(rad_linear_Y)
+			# for index, x in enumerate(python_threads):
+			# 	x.join()
 
-				curr_plant_irradiance = np.sum(rad_np)
-				
-				plant_irrad_arr.append(curr_plant_irradiance)
-	
+			for key in sorted(self.plant_irrad_dict.keys()):
+				plant_irrad_arr.append(self.plant_irrad_dict[key])
+
 		else:
 			plant_irrad_arr = np.zeros(len(self.mitsuba_scene.sensors())-1)
+		
+		print("Active count", threading.active_count())
 
 		return plant_irrad_arr
+
+	def worker_func(self, radmeter_index, saved_fresolver, saved_logger):
+		Thread.register_external_thread('render_'+str(radmeter_index)+'_') 
+		newThread = Thread.thread()
+		newThread.set_file_resolver(saved_fresolver) 
+		newThread.set_logger(saved_logger)
+
+		self.mitsuba_scene.integrator().render(self.mitsuba_scene, self.mitsuba_scene.sensors()[radmeter_index])
+		meter = self.mitsuba_scene.sensors()[radmeter_index].film()
+		rad = meter.bitmap(raw=True)
+		rad_linear_Y = rad.convert(Bitmap.PixelFormat.Y, Struct.Type.Float32, \
+			srgb_gamma=False)
+		rad_np = np.array(rad_linear_Y)
+		curr_plant_irradiance = np.sum(rad_np)
+		# curr_plant_irradiance = 0
+		
+		self.plant_irrad_dict[radmeter_index-1] = curr_plant_irradiance
 
 
 	def get_sun_coordinates(self, hours_timedelta):
 		
 		radius_1, radius_2 = 1, 1
 
-		# self.curr_date_time += datetime.timedelta(days=1)
-		
 		self.curr_date_time += datetime.timedelta(hours=hours_timedelta)
 
 		utc_date_time = self.curr_date_time.astimezone(datetime.timezone.utc)
@@ -208,8 +250,9 @@ class AgroEnv(gym.Env):
 		# print("CURR TIME: ", self.curr_date_time)
 		# print("UTC TIME:", utc_date_time)
 
-		az, zen = sunpos(utc_date_time, self.latitude, self.longitude, self.elevation)[:2] #discard RA, dec, H
-		#convert zenith to elevation
+		az, zen = sunpos(utc_date_time, self.latitude, self.longitude, self.elevation)[:2] #* INFO: discard RA, dec, H
+
+		#* INFO: convert zenith to elevation
 		elev = 90 - zen
 		
 		x_val = radius_1 * math.sin(math.radians(az))

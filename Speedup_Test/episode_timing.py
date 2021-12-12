@@ -1,10 +1,12 @@
 import sys
 import os
 import time
+import threading
 import pickle
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from Environment_Files.gym_mitsuba_env import AgroEnv
+from Environment_Files.gym_mitsuba_env_multithreaded import AgroEnv
 from matplotlib import pyplot as plt
+import faulthandler
 
 def episode_time_test():
 	NewEnv = AgroEnv()
@@ -136,5 +138,10 @@ if __name__ == "__main__":
 
 	# episode_time_test()
 	# step_time_test()
-	plant_test_500()
+	faulthandler.enable()
+	# sys.setrecursionlimit(2097152)    # adjust numbers
+	# threading.stack_size(134217728)  
+	# sys.settrace(plant_test_500())
+	plant_test_500() 
+	
 

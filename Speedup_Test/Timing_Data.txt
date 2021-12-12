@@ -2,3 +2,4 @@ TEST Scenario (1 Step w/ 500 Plants ~12 Render Cycles)
 Execution Times:
 On Local Machine (Macbook i7): 1174
 On DISCOVERY-EPYC: 515.8113241195679 
+W/ 500 threads: 55.9

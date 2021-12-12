@@ -82,8 +82,6 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 
 ## Work Distribution
 
-We are a team of three and all works are split equally as follow:
-
 **Oneeb:** Create test case, organize code and work on parallelism in python code.
 
 **Iris:** Generate results and visualizations in plots. Working on parallelism using MPI4py and multi-threading and processes in python. 
@@ -92,7 +90,7 @@ We are a team of three and all works are split equally as follow:
 
 ## Acknowledgment
 
-Our team is very grateful to **Tomek Osinski** from CARC who was of great help in setting up the mitsuba library for us on Discovery, a process which turned out to be rather convoluted and complicated.
+Our team is very grateful to **Tomek Osinski** from CARC who was of great help in setting up the Mitsuba library for us on Discovery, a process which turned out to be rather convoluted and complicated.
 
 
 
