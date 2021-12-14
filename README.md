@@ -89,8 +89,13 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 <div>
 	<img align="left" src="assets/multiple_threads.png" alt="multiple_threads" width="1200"/>
 </div>
-<br/>
+
+
 	In the visual table above, we have serial-time on the horizontal axis and the parallel execution on the vertical-axis. The functions being executed in 		parallel are work_func() and each such function represents a thread exectuing in parallel. The serial functions are render() and step(). The render() 		function is executed for each hour of the day.
+	
+	Some observations regarding the multiple threads execution
+	* All the threads do not start at the same time, in the rendor() function, we can see a tilt, as can be show in the time graph. This is because of the
+	latency of starting a thread.
 
 
 
