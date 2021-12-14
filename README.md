@@ -87,7 +87,7 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 ## Parallelization Results
 
 <div>
-	<img align="left" src="assets/multiple_threads.gif" alt="animation" width="1200"/>
+	<img align="left" src="assets/multiple_threads.png" alt="animation" width="1200"/>
 </div>
 <br/>
 <p>	
