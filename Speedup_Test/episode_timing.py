@@ -132,16 +132,17 @@ def plant_test_500():
 	test_env.step([0,0,0])
 
 	print("Time taken: ", time.time()-start_time)
+	print("Active Count after Step:", threading.active_count())
+	# sys.exit()
 
 
 if __name__ == "__main__":
 
-	# episode_time_test()
-	# step_time_test()
+	print(threading.active_count())
 	faulthandler.enable()
-	# sys.setrecursionlimit(2097152)    # adjust numbers
-	# threading.stack_size(134217728)  
-	# sys.settrace(plant_test_500())
-	plant_test_500() 
+
+	# for i in range(10):
+	plant_test_500()
+	# sys.exit()
 	
 

@@ -3,3 +3,15 @@ Execution Times:
 On Local Machine (Macbook i7): 1174
 On DISCOVERY-EPYC: 515.8113241195679 
 W/ 500 threads: 55.9
+W/ 1 thread: 510.234
+W/ 2 threads: 260.784
+W/ 4 threads: 134.835
+W/ 5 threads: 110.000
+W/ 8 threads: 73.611
+W/ 10 threads: 62.164
+W/ 20 threads: 58.716
+W/ 50 threads: 54.624
+W/ 100 threads: 54.070
+W/ 200 threads: 53.756 (Optimal)
+W/ 250 threads: 54.387
+W/ 300 threads: 54.824

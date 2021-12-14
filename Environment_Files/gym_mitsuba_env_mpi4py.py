@@ -6,7 +6,7 @@ import math
 import datetime 
 import json
 import time
-from concurrent.futures import ThreadPoolExecutor, wait, as_completed
+# from concurrent.futures import ThreadPoolExecutor
 import threading
 import logging
 # import concurrent.futures.Executor
@@ -28,10 +28,8 @@ from Environment_Files.xml_scene import XML_Scene
 from Environment_Files.plant import Plant
 
 #// TODO: Join threads when returning	
-#// TODO: Use concurrent.futures.ThreadPoolExecutor for multithreading
 # TODO: Ensure there is no segmentation fault
 # TODO: Run MPI4Py
-# TODO: Change interactive job command
 #// TODO: Determine time without printing logging information
 #// TODO: Iterate over a different amount of threads and see which works best
 # TODO: mitsuba.set_variant('gpu_rgb')
@@ -144,7 +142,7 @@ class AgroEnv(gym.Env):
 		- 
 		4. Call on reward function to reap reward
 		'''
-		Thread.thread().logger().set_log_level(LogLevel.Info)
+		Thread.thread().logger().set_log_level(LogLevel.Warn)
 		
 		# plant_type, plant_x_loc, plant_y_loc = action
 		self.curr_step_num += 1
@@ -206,26 +204,17 @@ class AgroEnv(gym.Env):
 			
 			# for RADMETER_INDEX in range(1, 5):
 			total_thread_num = 50
-			with ThreadPoolExecutor(max_workers=total_thread_num) as executor:
-				futures_iter = []
-				for thread_num in range(1, total_thread_num+1):
-					futures_iter.append(executor.submit(self.worker_func, self.mitsuba_scene, thread_num, total_thread_num, saved_fresolver, saved_logger))
-				
-				for future in as_completed(futures_iter):
-					future.result()
-				
+			for thread_num in range(1, total_thread_num+1):
 				# call the integrator again for the RADMETER_INDEX, and store its "film" output
-				# x = threading.Thread(target=self.worker_func, args=(self.mitsuba_scene, thread_num, total_thread_num, saved_fresolver, saved_logger))
-				# python_threads.append(x)
-				# x.start()
+				x = threading.Thread(target=self.worker_func, args=(self.mitsuba_scene, thread_num, total_thread_num, saved_fresolver, saved_logger))
+				python_threads.append(x)
+				x.start()
 
-			# for index, x in enumerate(python_threads):
-			# 	x.join()
+			for index, x in enumerate(python_threads):
+				x.join()
 			# time.sleep(10)
-			# python_threads = []
-			# wait(, return_when='ALL_COMPLETED')
-			
-			
+			python_threads = []
+
 			for key in sorted(self.plant_irrad_dict.keys()):
 				plant_irrad_arr.append(self.plant_irrad_dict[key])
 
