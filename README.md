@@ -84,11 +84,19 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 <br />
 <br />
 
-# Parallelization Results
-<p>
-	<img align="top" src="assets/multiple_threads.gif" alt="animation" width="1200"/>
-	<img align="bottom" src="assets/single_thread.png" alt="timing data" width="1200"/>
+## Parallelization Results
+
+<div>
+	<img align="left" src="assets/multiple_threads.gif" alt="animation" width="1200"/>
+</div>
+<br/>
+<p>	
+	In the visual table above, we have serial-time on the horizontal axis and the parallel execution on the vertical-axis. The functions being executed in 		parallel are work_func() and each such function represents a thread exectuing in parallel. The serial functions are render() and step(). The render() 		function is executed for each hour of the day.
 </p>
+
+
+
+
 <br />
 <br />
 <br />
@@ -106,6 +114,7 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 <br />
 <br />
 <br />
+
 ## Work Distribution
 
 **Oneeb:** Create test case, organize code and work on parallelism in python code.
