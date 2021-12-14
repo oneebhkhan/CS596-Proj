@@ -62,12 +62,33 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 	<img align="right" src="assets/timing_results.png" alt="timing data" width="300"/>
 </p>
 
+
+
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
 # Parallelization Results
-
-![multiple_threads](https://user-images.githubusercontent.com/54956731/146084174-4dbe7b9e-e17f-4ce5-9a2a-a1![Screenshot 2021-12-14 at 1 44 47 PM](https://user-images.githubusercontent.com/54956731/146084256-1593fa14-5e96-412f-9e93-a9a3c127d826.png)
-81af907bd4.png)
-
-
+<p>
+	<img align="top" src="assets/multiple_threads.gif" alt="animation" width="1200"/>
+	<img align="bottom" src="assets/single_thread.png" alt="timing data" width="1200"/>
+</p>
 <br />
 <br />
 <br />
@@ -85,7 +106,6 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 <br />
 <br />
 <br />
-
 ## Work Distribution
 
 **Oneeb:** Create test case, organize code and work on parallelism in python code.
