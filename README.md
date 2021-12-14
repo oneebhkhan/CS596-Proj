@@ -87,12 +87,11 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 ## Parallelization Results
 
 <div>
-	<img align="left" src="assets/multiple_threads.png" alt="animation" width="1200"/>
+	<img align="left" src="assets/multiple_threads.png" alt="multiple_threads" width="1200"/>
 </div>
 <br/>
-<p>	
 	In the visual table above, we have serial-time on the horizontal axis and the parallel execution on the vertical-axis. The functions being executed in 		parallel are work_func() and each such function represents a thread exectuing in parallel. The serial functions are render() and step(). The render() 		function is executed for each hour of the day.
-</p>
+
 
 
 
