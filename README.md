@@ -39,8 +39,15 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 - [x] Identify how to visualize information 
 - [x] Profiler for Python 
 - [ ] Profile for C++ (Mitsuba) 
-- [ ] Analyze Profiling Results 
-- [ ] Implement Parallel Programming Techniques 
+- [x] Analyze Profiling Results 
+- [x] Implement Parallel Programming Techniques 
+	- [x] Implement Multithreading
+		- [ ] Determine reason for segmentation faults
+	- [x] Implement MPI  
+		- [x] Determine why rank 6 takes longer
+		- [ ] Aggregate values back in rank 0
+		- [ ] Determine xml error reason
+		- [ ] Be able to run multiple times
 
 ## Methods
 
@@ -58,7 +65,7 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 ## Preliminary Results
 
 <p>
-	<img align="left" src="assets/animated_field.gif" alt="animation" width="450"/>
+	<img align="left" src="assets/colored_field.gif" alt="animation" width="450"/>
 	<img align="right" src="assets/timing_results.png" alt="timing data" width="300"/>
 </p>
 

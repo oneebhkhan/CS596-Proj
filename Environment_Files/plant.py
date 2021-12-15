@@ -12,4 +12,5 @@ class Plant:
 
 	def plant_grow(self):
 		print("Incident Light:",self.incident_light)
+		# pass
 

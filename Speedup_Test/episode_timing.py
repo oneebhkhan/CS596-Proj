@@ -4,9 +4,14 @@ import time
 import threading
 import pickle
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from Environment_Files.gym_mitsuba_env_multithreaded import AgroEnv
+# from Environment_Files.gym_mitsuba_env_mpi4py import AgroEnv
+# from Environment_Files.gym_mitsuba_env_multithreaded import AgroEnv
+from Environment_Files.gym_mitsuba_env import AgroEnv
 from matplotlib import pyplot as plt
 import faulthandler
+from mpi4py import MPI
+from mpi4py import rc
+rc.thread_level = "multiple"
 
 def episode_time_test():
 	NewEnv = AgroEnv()
@@ -115,6 +120,32 @@ def step_time_test():
 	plt.savefig(NewEnv.graph_file_path+"step_time_comparison.png")
 	plt.close()
 	
+def plant_test_500_mpi(comm):
+	with open('Speedup_Test/test_plant_loc.pickle', 'rb') as handle:
+   		plant_loc_dict = pickle.load(handle)
+
+	x_loc_arr = plant_loc_dict["X_LOC"]
+	y_loc_arr = plant_loc_dict["Y_LOC"]
+
+	test_env = AgroEnv()
+
+	for x_loc, y_loc in zip(plant_loc_dict["X_LOC"], plant_loc_dict["Y_LOC"]):
+		test_env.add_plant_to_scene([1, x_loc, y_loc])
+	
+	start_time = time.time()
+
+	rank = comm.Get_rank()
+	size = comm.Get_size()
+	print("Size", size)
+	print("Rank", rank)
+	test_env.step([0,0,0], rank, size)
+	
+	# test_env.MPI_Test(comm, rank)
+
+	print("Time taken: ", time.time()-start_time)
+	print("Active Count after Step:", threading.active_count())
+	# sys.exit()
+
 def plant_test_500():
 	with open('Speedup_Test/test_plant_loc.pickle', 'rb') as handle:
    		plant_loc_dict = pickle.load(handle)
@@ -130,19 +161,46 @@ def plant_test_500():
 	start_time = time.time()
 
 	test_env.step([0,0,0])
-
+	
 	print("Time taken: ", time.time()-start_time)
 	print("Active Count after Step:", threading.active_count())
 	# sys.exit()
 
+
+def plant_animation():
+	with open('Speedup_Test/test_plant_loc.pickle', 'rb') as handle:
+   		plant_loc_dict = pickle.load(handle)
+
+	x_loc_arr = plant_loc_dict["X_LOC"]
+	y_loc_arr = plant_loc_dict["Y_LOC"]
+
+	test_env = AgroEnv()
+
+	for x_loc, y_loc in zip(plant_loc_dict["X_LOC"], plant_loc_dict["Y_LOC"]):
+		test_env.add_plant_to_scene([1, x_loc, y_loc], "diffuse", "0.015, 0.1, 0.027")
+
+	test_env.xml_scene.toxmlFile('Animation_Files/colored_500_plants_rotation.xml')
 
 if __name__ == "__main__":
 
 	print(threading.active_count())
 	faulthandler.enable()
 
-	# for i in range(10):
-	plant_test_500()
+	# for i in range(100):
+	# 	print(i)
+	# 	time.sleep(2)
+	# 	plant_test_500()	
 	# sys.exit()
+	comm = MPI.COMM_WORLD
+	
+	# for i in range(10):
+	# 	print("ITER",i)
+	# 	time.sleep(2)
+	# 	plant_test_500_mpi(comm)	
+
+	# plant_test_500_mpi(comm)
+
+	# plant_test_500()
+	plant_animation()
 	
 

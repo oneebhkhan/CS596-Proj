@@ -5,7 +5,7 @@
     </integrator>
     <sensor type="perspective">
         <transform name="to_world">
-            <lookat origin="347.12650483813616, -44.75700658957701, 150" target="0, 0, 0" up="0, 0, 1"/>
+            <lookat origin="-349.2808874626177, 22.424576993249474, 150" target="0, 0, 0" up="0, 0, 1"/>
         </transform>
         <sampler type="stratified">
             <integer name="sample_count" value="16"/>
@@ -15,11 +15,37 @@
         <spectrum name="irradiance" value="1.0"/>
         <vector name="direction" value="-0.9945475720699214, 0.10428387646143818, 0.027579075938899123"/>
     </emitter>
+    <emitter type="directional">
+        <spectrum name="irradiance" value="1.0"/>
+        <vector name="direction" value="0.9945475720699214, -0.10428387646143818, 0.027579075938899123"/>
+    </emitter>
+    <emitter type="directional">
+        <spectrum name="irradiance" value="1.0"/>
+        <vector name="direction" value="0.9945475720699214, 0.10428387646143818, 0.027579075938899123"/>
+    </emitter>
+    <emitter type="directional">
+        <spectrum name="irradiance" value="1.0"/>
+        <vector name="direction" value="-0.9945475720699214, -0.10428387646143818, 0.027579075938899123"/>
+    </emitter>
+    <emitter type="constant">
+        <spectrum name="radiance" value="0.80"/>
+    </emitter>
+    <shape type="rectangle">
+        <bsdf type="diffuse">
+            <rgb name="reflectance" value="0.392, 0.270, 0.074"/>
+        </bsdf>
+        <transform name="to_world">
+            <scale value="150"/>
+        </transform>
+    </shape>
     <shape type="obj">
         <string name="filename" value="Object_Files/Corn1.obj"/>
         <transform name="to_world">
             <translate value="56.9780002213424, 39.07739497052373, 0"/>
         </transform>
+        <bsdf type="diffuse">
+            <rgb name="reflectance" value="0.015, 0.1, 0.027"/>
+        </bsdf>
         <sensor type="irradiancemeter">
             <sampler type="stratified">
                 <integer name="sample_count" value="16"/>

@@ -5,6 +5,7 @@ module load libpng/1.6.37
 module load cmake/3.15.4
 module load libjpeg-turbo/2.0.6
 module load zlib/1.2.11
+module load cuda/11.2.2
 cd ~/proj/CS596-Proj
 source ../mitsuba2/setpath.sh
 conda activate mitsu

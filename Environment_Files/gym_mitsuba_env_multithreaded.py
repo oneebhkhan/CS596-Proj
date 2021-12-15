@@ -16,6 +16,7 @@ import gym
 from matplotlib import pyplot as plt
 from mpl_toolkits import mplot3d
 
+from enoki import *
 import mitsuba
 mitsuba.set_variant('scalar_rgb')
 from mitsuba.core import Bitmap, Struct, Thread, Logger, LogLevel
@@ -34,6 +35,7 @@ from Environment_Files.plant import Plant
 # TODO: Change interactive job command
 #// TODO: Determine time without printing logging information
 #// TODO: Iterate over a different amount of threads and see which works best
+# TODO: Run different threads 3 times to get an avg time
 # TODO: mitsuba.set_variant('gpu_rgb')
 # TODO: Run multithreaded instance on local m/c
 
@@ -144,7 +146,7 @@ class AgroEnv(gym.Env):
 		- 
 		4. Call on reward function to reap reward
 		'''
-		Thread.thread().logger().set_log_level(LogLevel.Info)
+		Thread.thread().logger().set_log_level(LogLevel.Warn)
 		
 		# plant_type, plant_x_loc, plant_y_loc = action
 		self.curr_step_num += 1
@@ -205,11 +207,11 @@ class AgroEnv(gym.Env):
 			# input()
 			
 			# for RADMETER_INDEX in range(1, 5):
-			total_thread_num = 50
+			total_thread_num = 200
 			with ThreadPoolExecutor(max_workers=total_thread_num) as executor:
 				futures_iter = []
 				for thread_num in range(1, total_thread_num+1):
-					futures_iter.append(executor.submit(self.worker_func, self.mitsuba_scene, thread_num, total_thread_num, saved_fresolver, saved_logger))
+					futures_iter.append(executor.submit(self.worker_func, thread_num, total_thread_num, saved_fresolver, saved_logger))
 				
 				for future in as_completed(futures_iter):
 					future.result()
@@ -236,20 +238,20 @@ class AgroEnv(gym.Env):
 
 		return plant_irrad_arr
 
-	def worker_func(self, mitsuba_scene, thread_num, total_threads, saved_fresolver, saved_logger):
+	def worker_func(self, thread_num, total_threads, saved_fresolver, saved_logger):
 		Thread.register_external_thread('render_'+str(thread_num)) 
 		newThread = Thread.thread()
 		newThread.set_file_resolver(saved_fresolver) 
 		newThread.set_logger(saved_logger)
 
-		self.calculate_plant_irradiance(mitsuba_scene, thread_num, total_threads)
+		self.calculate_plant_irradiance(thread_num, total_threads)
 		# Thread.join()
 
 	
-	def calculate_plant_irradiance(self, mitsuba_scene, thread_num, total_threads):
+	def calculate_plant_irradiance(self, thread_num, total_threads):
 		for radmeter_index in range(thread_num, 501, total_threads):		
-			mitsuba_scene.integrator().render(mitsuba_scene, mitsuba_scene.sensors()[radmeter_index])
-			meter = mitsuba_scene.sensors()[radmeter_index].film()
+			self.mitsuba_scene.integrator().render(self.mitsuba_scene, self.mitsuba_scene.sensors()[radmeter_index])
+			meter = self.mitsuba_scene.sensors()[radmeter_index].film()
 			rad = meter.bitmap(raw=True)
 			rad_linear_Y = rad.convert(Bitmap.PixelFormat.Y, Struct.Type.Float32, \
 				srgb_gamma=False)

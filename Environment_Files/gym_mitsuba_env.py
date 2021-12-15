@@ -14,7 +14,7 @@ from mpl_toolkits import mplot3d
 
 import mitsuba
 mitsuba.set_variant('scalar_rgb')
-from mitsuba.core import Bitmap, Struct, Thread
+from mitsuba.core import Bitmap, Struct, Thread, Logger, LogLevel
 from mitsuba.core.xml import load_file
  
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
@@ -109,14 +109,14 @@ class AgroEnv(gym.Env):
 		os.remove(self.modified_environment_path)
 
 
-	def add_plant_to_scene(self, action):
+	def add_plant_to_scene(self, action, bsdf_type=None, rgb_val=None):
 		plant_type, plant_x_loc, plant_y_loc = action
 
 		if plant_type:
 			new_plant = Plant(self.plant_info_dict[plant_type - 1], plant_x_loc, plant_y_loc)
 			self.plant_arr.append(new_plant)
 			self.num_plants += 1
-			self.xml_scene.addPlant(species=new_plant.stage_name, translate=str(plant_x_loc) +", " + str(plant_y_loc) +", 0")
+			self.xml_scene.addPlant(species=new_plant.stage_name, translate=str(plant_x_loc) +", " + str(plant_y_loc) +", 0", bsdf_type=bsdf_type, rgb_reflectance=rgb_val)
 
 
 	def step(self, action, rendering_bool=True, render_scene=True, irrad_meter_integrator=True):
@@ -128,6 +128,8 @@ class AgroEnv(gym.Env):
 		- 
 		4. Call on reward function to reap reward
 		'''
+		Thread.thread().logger().set_log_level(LogLevel.Warn)
+		Thread.thread().file_resolver().append(os.path.dirname(self.modified_environment_path))
 
 		# plant_type, plant_x_loc, plant_y_loc = action
 		self.curr_step_num += 1
@@ -138,7 +140,7 @@ class AgroEnv(gym.Env):
 			
 			day_loop = np.arange(0, 24, 24/self.time_steps_per_day)
 			plant_irrad_arr = np.zeros(self.num_plants) 
-
+			
 			for hour_of_day in day_loop:
 
 				x_val, y_val, z_val = self.get_sun_coordinates(24/self.time_steps_per_day)
@@ -160,7 +162,7 @@ class AgroEnv(gym.Env):
 
 	def render(self, render_scene=True, irrad_meter_integrator=True):
 		CAMERA = 0
-	
+		
 		sensor = self.mitsuba_scene.sensors()[CAMERA]
 		self.mitsuba_scene.integrator().render(self.mitsuba_scene, sensor)
 
