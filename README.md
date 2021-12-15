@@ -45,18 +45,18 @@ Our main script is _episode\_timing.py_ which loads are test scenario and then c
 
 	Multithreading was implementing using Python's native _concurrent.futures_ library. Multithreading is implemented in the _render()_ and _worker\_func()_ methods within the _gym\_mitsuba\_env\_multithread.py_ script.
 
-	Test
 
 * __Multiprocessing__
  
-	+ Multiprocessing was achieved by using the Message Passing Interface (MPI) library designed for Python _MPI4Py_. Multiprocessing was implemented in _episode\_timing.py_ and the _step()_ function of _gym\_mitsuba\_env\_mpi4py.py_ script. Our multithreaded implementation carried over to this implementation as well. However, initially the number of threads to be used was set to 1.
-	+ In case of hybrid MPI + Multithreading function, we simply changed the number of threads - i.e. _max\_workers_ in _render()_ to the desired number.
+	Multiprocessing was achieved by using the Message Passing Interface (MPI) library designed for Python _MPI4Py_. Multiprocessing was implemented in _episode\_timing.py_ and the _step()_ function of _gym\_mitsuba\_env\_mpi4py.py_ script. Our multithreaded implementation carried over to this implementation as well. However, initially the number of threads to be used was set to 1.
+	
+	In case of hybrid MPI + Multithreading function, we simply changed the number of threads - i.e. _max\_workers_ in _render()_ to the desired number.
 
 ### C++ Parallelization: 
 
 * __Multithreading__
 
-	+ The Mitsuba 2 library is implemented in C++ and has built-in multithreading. We did not have to optimize this, since whenever the renderer was called, it would utilize all the number of threads at its disposal.
+	The Mitsuba 2 library is implemented in C++ and has built-in multithreading. We did not have to optimize this, since whenever the renderer was called, it would utilize all the number of threads at its disposal.
 
 ## Results
 
@@ -74,7 +74,7 @@ Our main script is _episode\_timing.py_ which loads are test scenario and then c
 In the visual table above, we have serial-time on the horizontal axis and the parallel execution on the vertical-axis. The functions being executed in parallel are work_func() instances and each such function represents a single thread exectuing in parallel. The serial functions are render() and step(). The render() function is executed for each hour of the day. Both function render() and step() are executing in serial time and can be seen on the 	    horizontal axis. Some observations regarding the multiple threads execution:	
 </p>
 
-* All the threads do not start at the same time, in the render() function, we can see a tilt as shown with reference to a blue line, as can be show in the time graph. This is because of the latency of starting a new thread. In this image, there are 50 threads that work in parallel to perform the calculations. 
+	All the threads do not start at the same time, in the render() function, we can see a tilt as shown with reference to a blue line, as can be show in the time graph. This is because of the latency of starting a new thread. In this image, there are 50 threads that work in parallel to perform the calculations. 
 
 ### MPI Paralllel Mitsuba Rendering
 <!-- add Interactive Job Command -->
