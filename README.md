@@ -7,9 +7,9 @@ We are interested in optimizing the study of computational agroceology by simula
 1. [Introduction](#introduction)
 3. [Test Scenario](#test-scenario)
 2. [Methods](#methods)
-5. [Preliminary Results](#prelimary-results)
 6. [Results](#results)
 7. [Acknowledgement](#acknowledgment)
+8. [Future Work](#future-work)
 8. [Resources and Platform](#resources-and-platform)
 
 ## Introduction
@@ -29,6 +29,8 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 
 <p></p>
 
+<img src="assets/timing_results.png" alt="timing data" width="400"/>
+
 ## Methods
 
 ### Python Parallelization: 
@@ -39,12 +41,6 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 ### C++ Parallelization: 
 
 * __Multithreading__
-
-
-## Preliminary Results
-
-<img src="assets/timing_results.png" alt="timing data" width="400"/>
-
 
 ## Results
 
@@ -66,11 +62,11 @@ In the visual table above, we have serial-time on the horizontal axis and the pa
 
 ### MPI Paralllel Mitsuba Rendering
 <!-- add Interactive Job Command -->
-<img src="assets/mpi_results.png" alt="mpi results" width="300"/>
+<img src="assets/mpi_results.png" alt="mpi results" width="400"/>
 
 ### Hybrid MPI + Multi-threading Parallel Mitsuba Rendering
 <!-- add Interactive Job Command -->
-<img src="assets/hybrid_mpi_multithreading_results.png" alt="hybrid mpi multithreading results" width="300"/>
+<img src="assets/hybrid_mpi_multithreading_results.png" alt="hybrid mpi multithreading results" width="400"/>
 
 <!-- ## Work Distribution
 
@@ -80,18 +76,21 @@ In the visual table above, we have serial-time on the horizontal axis and the pa
 
 **Armaghan:** Profiling Python and C++ Code. Multithreading for Mitsuba. -->
 
+## Future Work
+
 ## Acknowledgment
 
 Our team is very grateful to **Tomek Osinski** from CARC who was of great help in setting up the Mitsuba library for us on Discovery, a process which turned out to be rather convoluted and complicated.
 
 ## Resources and Platform
 
+* C++
 * Python
+* Python Libraries
 	* [MPI4Py](https://mpi4py.readthedocs.io/en/stable/mpi4py.html)
 	* [concurrent.futures](https://docs.python.org/3/library/concurrent.futures.html)
 * [Mitsuba2](https://mitsuba2.readthedocs.io/en/latest/generated/plugins.html#bsdfs)
-* [CARC](https://www.carc.usc.edu/user-information/user-guides/hpc-basics/slurm-templates)
-* C++
+* [CARC Discovery](https://www.carc.usc.edu/user-information/user-guides/hpc-basics/slurm-templates)
 
 ## Tasks
 
