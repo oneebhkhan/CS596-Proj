@@ -66,6 +66,8 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 
 
 <img src="assets/colored_field.gif" alt="animation" width="750"/>
+<p> 360 degree view of a field with 500 plant objects </p>
+<br/>
 <img src="assets/timing_results.png" alt="timing data" width="300"/>
 
 
