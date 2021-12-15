@@ -25,6 +25,7 @@ Therefore, our goal is to optimize the rendering of incident light for multiple 
 <img src="assets/colored_field.gif" alt="animation" width="750"/>
 <b>Fig.1 - 360 degree view of a field with 500 plant objects</b>
 <br>
+<br>
 <p>In order for us to efficiently compare an improvement in the computation time, we have created a test case with 500 plant objects at specific x and y locations. This test case is used for methods discussed below, and the time taken for each method is the time taken to render the scene and calculate the incident light on each plant for 13 render cycles, i.e. 1 step</p>
 
 <img src="assets/timing_results.png" alt="timing data" width="400"/>
