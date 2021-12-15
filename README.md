@@ -43,7 +43,7 @@ Our main script is _episode\_timing.py_ which loads are test scenario and then c
 
 * __Multithreading__
 
-	+ Multithreading was implementing using Python's native _concurrent.futures_ library. Multithreading is implemented in the _render()_ and _worker\_func()_ methods within the _gym\_mitsuba\_env\_multithread.py_ script.
+	Multithreading was implementing using Python's native _concurrent.futures_ library. Multithreading is implemented in the _render()_ and _worker\_func()_ methods within the _gym\_mitsuba\_env\_multithread.py_ script.
 
 	Test
 
