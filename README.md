@@ -22,33 +22,6 @@ In the current set up, each training episode, that represents 1 year, comprises 
 
 Therefore, we aim to optimize the rendering of incident light for multiple plant objects in mitsuba environment using parallel computing techniques running on CPUs and GPUs.
 
-## Resources and Platform
-
-* Python
-	* MPI4Py
-* C++
-* Mitsuba2
-* CARC Discovery 
-
-## Tasks
-
-- [x] Port to Discovery Cluster 
-- [x] Create test case (field with 500 plants)
-	- [x] Correct GIF w/ white background
-- [x] Run test case on Discovery-EPYC and Local m/c 
-- [x] Identify how to visualize information 
-- [x] Profiler for Python 
-- [ ] Profile for C++ (Mitsuba) 
-- [x] Analyze Profiling Results 
-- [x] Implement Parallel Programming Techniques 
-	- [x] Implement Multithreading
-		- [ ] Determine reason for segmentation faults
-	- [x] Implement MPI  
-		- [x] Determine why rank 6 takes longer
-		- [ ] Aggregate values back in rank 0
-		- [ ] Determine xml error reason
-		- [ ] Be able to run multiple times
-
 ## Methods
 
 ### Python Parallelization: 
@@ -107,5 +80,30 @@ In the visual table above, we have serial-time on the horizontal axis and the pa
 
 Our team is very grateful to **Tomek Osinski** from CARC who was of great help in setting up the Mitsuba library for us on Discovery, a process which turned out to be rather convoluted and complicated.
 
+## Resources and Platform
 
+* Python
+	* MPI4Py https://mpi4py.readthedocs.io/en/stable/mpi4py.html
+	* concurrent.futures https://docs.python.org/3/library/concurrent.futures.html 
+* Mitsuba2 https://mitsuba2.readthedocs.io/en/latest/generated/plugins.html#bsdfs
+* CARC Discovery https://www.carc.usc.edu/user-information/user-guides/hpc-basics/slurm-templates
+* C++
 
+## Tasks
+
+- [x] Port to Discovery Cluster 
+- [x] Create test case (field with 500 plants)
+	- [x] Correct GIF w/ white background
+- [x] Run test case on Discovery-EPYC and Local m/c 
+- [x] Identify how to visualize information 
+- [x] Profiler for Python 
+- [ ] Profile for C++ (Mitsuba) 
+- [x] Analyze Profiling Results 
+- [x] Implement Parallel Programming Techniques 
+	- [x] Implement Multithreading
+		- [ ] Determine reason for segmentation faults
+	- [x] Implement MPI  
+		- [x] Determine why rank 6 takes longer
+		- [ ] Aggregate values back in rank 0
+		- [ ] Determine xml error reason
+		- [ ] Be able to run multiple times
