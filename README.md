@@ -1,6 +1,6 @@
 # 🌱 Parallel Rendering for In Situ Incident Light Calculation 🌱
 
-We are interested in optimizing the study of computational agroceology by simulating ecosystem and individual plant using Mitsuba, a physics engine that renders the environment and simulates incident light. 
+We are interested in optimizing the study of computational agroceology by simulating ecosystem and individual plants using Mitsuba2, a physics engine that renders the environment and simulates incident light. 
 
 ## Overview
 
@@ -14,17 +14,17 @@ We are interested in optimizing the study of computational agroceology by simula
 
 ## Introduction
 
-We model the growth of plant objects in simulation as a decision-making process and construct the rewards and penalties based of the incident light on plant objects. Our end goal will be to train a plant sowing agent using reinforcement learning (RL) algorithms. 
+We are working on creating an Environment for a Reinforcement Learning agent capable of optimizing plant sowing strategies using rewards and penalties obtained from incident light values on plant objects. 
 
-Rendering and calculation of incident light on one plant object takes approximately 1 second on a 6 cores i7 CPU. As the RL agent sows more plants in the environment, each individual rendering could end up taking 2 or 3 orders of magnitude longer. 
+In order to render a scene and calculate incident light, we are using Mitsuba 2, a research-oriented rendering system. Using Mitsuba, rendering a scene and calculating the incident light on one plant object takes approximately 1 second on a 6 core i7 CPU. Typically, training of an RL model comprises of episodes in the orders of hundred or thousands, which are in turn contain several hundred or thousand steps. In the current set up, each training episode, that represents 1 year, comprises of 365 steps, with each step representing 1 day. Each step itself comprises of 12-13 render cycles, where each render cycle represents 1 daylight hour. Even if we take 1 second per plant, in the case of 500 plants, we will end up taking 500 seconds per render cycle. In order for one training cycle comprising of 1000 episodes and 365 steps per episode, our training time would be 500 x 13 x 365 x 1000 = 2.372x10^9 seconds, thus rendering our experiment impossible. 
 
-In the current set up, each training episode, that represents 1 year, comprises of 365 steps, with each step representing 1 day. Currently, the render time for 1 episode is > 15 hours. It is very computationally expensive to simulate 1-year for plants in the envivronment to effectively understand the growth of plants. 
-
-Therefore, we aim to optimize the rendering of incident light for multiple plant objects in mitsuba environment using parallel computing techniques running on CPUs and GPUs.
+Therefore, our goal is to optimize the rendering of incident light for multiple plant objects in the Mitsuba environment using parallel computing techniques as discussed in CSCI 596.
 
 ## Test Scenario
-
+<figure>
 <img src="assets/colored_field.gif" alt="animation" width="750"/>
+<figcaption aligh='center'>360 degree view of a field with 500 plant objects</figcaption>
+</figure>
 <p> 360 degree view of a field with 500 plant objects </p>
 
 <p></p>
@@ -78,6 +78,15 @@ In the visual table above, we have serial-time on the horizontal axis and the pa
 
 ## Future Work
 
+- [x] Implement Parallel Programming Techniques 
+	- [x] Implement Multithreading
+		- [ ] Determine reason for segmentation faults
+	- [x] Implement MPI  
+		- [x] Determine why rank 6 takes longer
+		- [ ] Aggregate values back in rank 0
+		- [ ] Determine xml error reason
+		- [ ] Be able to run multiple times
+
 ## Acknowledgment
 
 Our team is very grateful to **Tomek Osinski** from CARC who was of great help in setting up the Mitsuba library for us on Discovery, a process which turned out to be rather convoluted and complicated.
@@ -92,7 +101,7 @@ Our team is very grateful to **Tomek Osinski** from CARC who was of great help i
 * [Mitsuba2](https://mitsuba2.readthedocs.io/en/latest/generated/plugins.html#bsdfs)
 * [CARC Discovery](https://www.carc.usc.edu/user-information/user-guides/hpc-basics/slurm-templates)
 
-## Tasks
+<!-- ## Tasks
 
 - [x] Port to Discovery Cluster 
 - [x] Create test case (field with 500 plants)
@@ -109,4 +118,4 @@ Our team is very grateful to **Tomek Osinski** from CARC who was of great help i
 		- [x] Determine why rank 6 takes longer
 		- [ ] Aggregate values back in rank 0
 		- [ ] Determine xml error reason
-		- [ ] Be able to run multiple times
+		- [ ] Be able to run multiple times -->
