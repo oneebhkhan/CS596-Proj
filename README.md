@@ -30,6 +30,7 @@ Therefore, our goal is to optimize the rendering of incident light for multiple 
 <img src="assets/timing_results.png" alt="timing data" width="400"/>
 <b>Fig.2 - Baseline Results</b>
 <br>
+<br>
 <p>Fig. 2 shows the time taken for <b>1 step</b> on a local machine (Macbook Pro 2019) and on the EPYC-64 node on the Disovery cluster at CARC USC. These results will serve as our baseline as we implement different parallel rendering techniques.</p>
 
 
