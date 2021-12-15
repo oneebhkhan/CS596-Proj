@@ -69,6 +69,42 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 	<img align="right" src="assets/timing_results.png" alt="timing data" width="300"/>
 </p>
 
+
+
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+## Parallelization Results
+
+<div>
+	<img align="left" src="assets/multiple_threads1.png" alt="multiple_threads" width="1200"/>
+</div>
+
+<p>
+In the visual table above, we have serial-time on the horizontal axis and the parallel execution on the vertical-axis. The functions being executed in 		parallel are work_func() instances and each such function represents a single thread exectuing in parallel. The serial functions are render() and step(). 	  The render() function is executed for each hour of the day. Both function render() and step() are executing in serial time and can be seen on the 	    horizontal axis. Some observations regarding the multiple threads execution	
+</p>
+	* All the threads do not start at the same time, in the rendor() function, we can see a tilt as shown with reference to a blue line, as can be show in the time graph. This is because of the latency of starting a thread. In this image, there are 50 threads that work in parallel to perform the calculations. 
+
+
+
+
 <br />
 <br />
 <br />

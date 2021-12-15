@@ -28,6 +28,8 @@ from Feature_Libraries.sun_position import sunpos
 from Environment_Files.xml_scene import XML_Scene
 from Environment_Files.plant import Plant
 
+from time_profile import TimeProfiler, TimeRecorder
+
 #// TODO: Join threads when returning	
 #// TODO: Use concurrent.futures.ThreadPoolExecutor for multithreading
 # TODO: Ensure there is no segmentation fault
@@ -65,6 +67,7 @@ class AgroEnv(gym.Env):
 
 	def __init__(self):
 		# super(AgroEnv, self).__init__()
+		tt = TimeProfiler('ArgoEnv','__init__()')
 		self.dirname = os.path.dirname(__file__)
 		
 		with open('configuration.yaml') as configuration_yaml_file:
@@ -146,6 +149,7 @@ class AgroEnv(gym.Env):
 		- 
 		4. Call on reward function to reap reward
 		'''
+		tt = TimeProfiler('ArgoEnv','step()')
 		Thread.thread().logger().set_log_level(LogLevel.Warn)
 		
 		# plant_type, plant_x_loc, plant_y_loc = action
@@ -181,8 +185,10 @@ class AgroEnv(gym.Env):
 
 
 	def render(self, render_scene=True, irrad_meter_integrator=True):
+		
+		tt = TimeProfiler('ArgoEnv','render()')
 		CAMERA = 0
-	
+
 		sensor = self.mitsuba_scene.sensors()[CAMERA]
 		self.mitsuba_scene.integrator().render(self.mitsuba_scene, sensor)
 
@@ -239,6 +245,7 @@ class AgroEnv(gym.Env):
 		return plant_irrad_arr
 
 	def worker_func(self, thread_num, total_threads, saved_fresolver, saved_logger):
+		tt = TimeProfiler('ArgoEnv','worker_func()')
 		Thread.register_external_thread('render_'+str(thread_num)) 
 		newThread = Thread.thread()
 		newThread.set_file_resolver(saved_fresolver) 

@@ -13,6 +13,8 @@ from mpi4py import MPI
 from mpi4py import rc
 rc.thread_level = "multiple"
 
+from time_profile import TimeProfiler, TimeRecorder 
+
 def episode_time_test():
 	NewEnv = AgroEnv()
 	time_arr = []
@@ -147,6 +149,7 @@ def plant_test_500_mpi(comm):
 	# sys.exit()
 
 def plant_test_500():
+	tt = TimeProfiler('Main','plant_test_500()')
 	with open('Speedup_Test/test_plant_loc.pickle', 'rb') as handle:
    		plant_loc_dict = pickle.load(handle)
 
@@ -164,7 +167,9 @@ def plant_test_500():
 	
 	print("Time taken: ", time.time()-start_time)
 	print("Active Count after Step:", threading.active_count())
-	# sys.exit()
+	tr = TimeRecorder()
+	tr.show_all()
+	return
 
 
 def plant_animation():
