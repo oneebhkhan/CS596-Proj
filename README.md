@@ -5,12 +5,12 @@ We are interested in optimizing the study of computational agroceology by simula
 ## Overview
 
 1. [Introduction](#introduction)
-3. [Resources and Platform](#resources-and-platform)
-2. [Task](#tasks)
-4. [Methods](#methods)
+3. [Test Scenario](#test-scenario)
+2. [Methods](#methods)
 5. [Preliminary Results](#prelimary-results)
-6. [Work Distribution](#work-distribution)
+6. [Results](#results)
 7. [Acknowledgement](#acknowledgment)
+8. [Resources and Platform](#resources-and-platform)
 
 ## Introduction
 
@@ -22,11 +22,17 @@ In the current set up, each training episode, that represents 1 year, comprises 
 
 Therefore, we aim to optimize the rendering of incident light for multiple plant objects in mitsuba environment using parallel computing techniques running on CPUs and GPUs.
 
+## Test Scenario
+
+<img src="assets/colored_field.gif" alt="animation" width="750"/>
+<p> 360 degree view of a field with 500 plant objects </p>
+
+<p></p>
+
 ## Methods
 
 ### Python Parallelization: 
 
-* __Spatial Decomposition__
 * __Multithreading__
 * __Multiprocessing__
 
@@ -35,40 +41,35 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 * __Multithreading__
 
 
-## Test Scenario
-
-<img src="assets/colored_field.gif" alt="animation" width="750"/>
-<p> 360 degree view of a field with 500 plant objects </p>
-
-<p></p>
-
 ## Preliminary Results
 
 <img src="assets/timing_results.png" alt="timing data" width="300"/>
 
 
+## Results
 
-## Profiling
+### Multi-threading Paralllel Mitsuba Rendering
+<!-- add Interactive Job Command -->
+<img src="assets/multithreading_results.png" alt="multithreading results" width="300"/>
+
+#### Profiling
 
 <div>
 	<img align="left" src="assets/multiple_threads1.png" alt="multiple_threads" width="1200"/>
 </div>
 
 <p>
-In the visual table above, we have serial-time on the horizontal axis and the parallel execution on the vertical-axis. The functions being executed in 		parallel are work_func() instances and each such function represents a single thread exectuing in parallel. The serial functions are render() and step(). 	  The render() function is executed for each hour of the day. Both function render() and step() are executing in serial time and can be seen on the 	    horizontal axis. Some observations regarding the multiple threads execution	
+In the visual table above, we have serial-time on the horizontal axis and the parallel execution on the vertical-axis. The functions being executed in parallel are work_func() instances and each such function represents a single thread exectuing in parallel. The serial functions are render() and step(). The render() function is executed for each hour of the day. Both function render() and step() are executing in serial time and can be seen on the 	    horizontal axis. Some observations regarding the multiple threads execution:	
 </p>
-	* All the threads do not start at the same time, in the rendor() function, we can see a tilt as shown with reference to a blue line, as can be show in the time graph. This is because of the latency of starting a thread. In this image, there are 50 threads that work in parallel to perform the calculations. 
 
-
-## Results
-
-### Multi-threading Paralllel Mitsuba Rendering
-<img src="assets/multithreading_results.png" alt="multithreading results" width="300"/>
+	* All the threads do not start at the same time, in the render() function, we can see a tilt as shown with reference to a blue line, as can be show in the time graph. This is because of the latency of starting a new thread. In this image, there are 50 threads that work in parallel to perform the calculations. 
 
 ### MPI Paralllel Mitsuba Rendering
+<!-- add Interactive Job Command -->
 <img src="assets/mpi_results.png" alt="mpi results" width="300"/>
 
 ### Hybrid MPI + Multi-threading Parallel Mitsuba Rendering
+<!-- add Interactive Job Command -->
 <img src="assets/hybrid_mpi_multithreading_results.png" alt="hybrid mpi multithreading results" width="300"/>
 
 <!-- ## Work Distribution
