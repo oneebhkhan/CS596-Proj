@@ -43,14 +43,14 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 
 ## Preliminary Results
 
-<img src="assets/timing_results.png" alt="timing data" width="500"/>
+<img src="assets/timing_results.png" alt="timing data" width="400"/>
 
 
 ## Results
 
 ### Multi-threading Paralllel Mitsuba Rendering
 <!-- add Interactive Job Command -->
-<img src="assets/multithreading_results.png" alt="multithreading results" width="500"/>
+<img src="assets/multithreading_results.png" alt="multithreading results" width="400"/>
 
 #### Profiling
 
