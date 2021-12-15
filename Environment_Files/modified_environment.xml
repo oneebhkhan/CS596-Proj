@@ -13,7 +13,7 @@
     </sensor>
     <emitter type="directional">
         <spectrum name="irradiance" value="1.0"/>
-        <vector name="direction" value="-0.9945475720699214, 0.10428387646143818, 0.027579075938899123"/>
+        <vector name="direction" value="0.9963523783412075, -0.08533427314871347, 0.30257947193980633"/>
     </emitter>
     <shape type="obj">
         <string name="filename" value="Object_Files/Corn1.obj"/>

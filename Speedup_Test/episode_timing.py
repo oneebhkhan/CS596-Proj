@@ -4,9 +4,9 @@ import time
 import threading
 import pickle
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-# from Environment_Files.gym_mitsuba_env_mpi4py import AgroEnv
+from Environment_Files.gym_mitsuba_env_mpi4py import AgroEnv
 # from Environment_Files.gym_mitsuba_env_multithreaded import AgroEnv
-from Environment_Files.gym_mitsuba_env import AgroEnv
+# from Environment_Files.gym_mitsuba_env import AgroEnv
 from matplotlib import pyplot as plt
 import faulthandler
 from mpi4py import MPI
@@ -203,9 +203,9 @@ if __name__ == "__main__":
 	# 	time.sleep(2)
 	# 	plant_test_500_mpi(comm)	
 
-	# plant_test_500_mpi(comm)
+	plant_test_500_mpi(comm)
 
 	# plant_test_500()
-	plant_animation()
+	# plant_animation()
 	
 

@@ -34,7 +34,7 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 
 - [x] Port to Discovery Cluster 
 - [x] Create test case (field with 500 plants)
-	- [ ] Correct GIF w/ white background
+	- [x] Correct GIF w/ white background
 - [x] Run test case on Discovery-EPYC and Local m/c 
 - [x] Identify how to visualize information 
 - [x] Profiler for Python 
@@ -75,7 +75,7 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 
 
 
-## Parallelization Results
+## Profiling
 
 <div>
 	<img align="left" src="assets/multiple_threads1.png" alt="multiple_threads" width="1200"/>
@@ -85,6 +85,14 @@ Therefore, we aim to optimize the rendering of incident light for multiple plant
 In the visual table above, we have serial-time on the horizontal axis and the parallel execution on the vertical-axis. The functions being executed in 		parallel are work_func() instances and each such function represents a single thread exectuing in parallel. The serial functions are render() and step(). 	  The render() function is executed for each hour of the day. Both function render() and step() are executing in serial time and can be seen on the 	    horizontal axis. Some observations regarding the multiple threads execution	
 </p>
 	* All the threads do not start at the same time, in the rendor() function, we can see a tilt as shown with reference to a blue line, as can be show in the time graph. This is because of the latency of starting a thread. In this image, there are 50 threads that work in parallel to perform the calculations. 
+
+
+## Results
+
+### Multi-threading Paralllel Mitsuba Rendering
+
+
+### Hybrid MPI + Multi-threading Parallel Mitsuba Rendering
 
 
 ## Work Distribution
