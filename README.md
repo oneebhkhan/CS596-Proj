@@ -45,6 +45,8 @@ Our main script is _episode\_timing.py_ which loads are test scenario and then c
 
 	+ Multithreading was implementing using Python's native _concurrent.futures_ library. Multithreading is implemented in the _render()_ and _worker\_func()_ methods within the _gym\_mitsuba\_env\_multithread.py_ script.
 
+	Test
+
 * __Multiprocessing__
  
 	+ Multiprocessing was achieved by using the Message Passing Interface (MPI) library designed for Python _MPI4Py_. Multiprocessing was implemented in _episode\_timing.py_ and the _step()_ function of _gym\_mitsuba\_env\_mpi4py.py_ script. Our multithreaded implementation carried over to this implementation as well. However, initially the number of threads to be used was set to 1.
@@ -58,7 +60,7 @@ Our main script is _episode\_timing.py_ which loads are test scenario and then c
 
 ## Results
 
-### Multi-threading Paralllel Mitsuba Rendering
+### Multi-threading Parallel Mitsuba Rendering
 <!-- add Interactive Job Command -->
 <img src="assets/multithreading_results.png" alt="multithreading results" width="400"/>
 
