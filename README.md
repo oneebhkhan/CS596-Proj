@@ -46,6 +46,8 @@ Therefore, our goal is to optimize the rendering of incident light for multiple 
 
 * __Multithreading__
 
+The Mitsuba 2 library is implemented in C++ and has built-in multithreading. We did not have to optimize this, since whenever the render was called it would utilize all the number of threads at its disposal.
+
 ## Results
 
 ### Multi-threading Paralllel Mitsuba Rendering
