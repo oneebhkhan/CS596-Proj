@@ -43,16 +43,18 @@ Our main script is _episode\_timing.py_ which loads are test scenario and then c
 
 * __Multithreading__
 
-	Multithreading was implementing using Python's native _concurrent.futures_ library. Multithreading is implemented in the _render()_ and _worker\_func()_ methods within the _gym\_mitsuba\_env\_multithread.py_ script.
+	Multithreading was implementing using Python's native _concurrent.futures_ library. Multithreading is implemented in the _render()_ and _worker\_func()_ methods within the _gym\_mitsuba\_env\_multithread.py_ script. Each thread was responsible for calculating incident light on a particular set of plants. As the number of threads increased, the size of this set decreased.
 
 	+ Interactive Slurm Job command: __salloc --nodes=1 --ntasks=64 --cpus-per-task=1 --mem=0 --time=1:00:00 --partition=epyc-64 --account=***__
 
 
 * __Multiprocessing__
  
-	Multiprocessing was achieved by using the Message Passing Interface (MPI) library designed for Python _MPI4Py_. Multiprocessing was implemented in _episode\_timing.py_ and the _step()_ function of _gym\_mitsuba\_env\_mpi4py.py_ script. Our multithreaded implementation carried over to this implementation as well. However, initially the number of threads to be used was set to 1.
+	Multiprocessing was achieved by using the Message Passing Interface (MPI) library designed for Python _MPI4Py_. Multiprocessing was implemented in _episode\_timing.py_ and the _step()_ function of _gym\_mitsuba\_env\_mpi4py.py_ script. Each rank in this implementation was responsible for a set of render cycles, as the MPI size increased, the set of render cycles each rank was responsible for decreased.
 	
-	In case of hybrid MPI + Multithreading function, we simply changed the number of threads - i.e. _max\_workers_ in _render()_ to the desired number.
+	Our multithreaded implementation carried over to this implementation as well. However, initially the number of threads to be used was set to 1.
+	
+	In case of hybrid MPI + Multithreading function, we simply changed the number of threads - i.e. _max\_workers_ in _render()_ to the desired number. Each rank was responsible for a set of render cycles, and each thread was responsible for a set of plant objects. 
 
 	+ Interactive Slurm Job command: __salloc --nodes=13 --ntasks=13 --cpus-per-task=64 --mem=0 --time=1:00:00 --partition=epyc-64 --account=***__
 
@@ -73,7 +75,9 @@ All of the timing results can be found in _Speedup\_Test/Timing\_Data.txt_.
 <br>
 <br>
 
-Using the _concurrent.future
+As we increase the number of threads, we see a sharp improvement in the time taken to complete 1 step. From 510 seconds for 1 thread, to 54 seconds for > 50 threads, we see an approximately 10x speedup. 
+
+We can also see that after 10 threads (62.164 seconds) we get diminishing returns in terms of speed improvement.
 
 #### Profiling
 
@@ -93,6 +97,9 @@ In the visual table above, we have serial-time on the horizontal axis and the pa
 <b>Fig.5 - MPI Implementation Timing Results</b>
 <br>
 <br>
+After seeing an improvement through multithreaded, we implemented multiprocessing using MPI. Here the results are promising as well. From 510 seconds with MPI Size 1 to 38.530 seconds with MPI Size 13, we see a 13x speedup.
+
+We see a near 2x speed up when we go from MPI Size 12 to Size 13, since in there are 13 render cycles and in the case with MPI Size 12, one rank of the 12 will have to do double the computation in a serial manner.
 
 ### Hybrid MPI + Multi-threading Parallel Mitsuba Rendering
 <!-- add Interactive Job Command -->
@@ -100,6 +107,9 @@ In the visual table above, we have serial-time on the horizontal axis and the pa
 <b>Fig.6 - Hybrid MPI + Multithreaded Implementation Timing Results</b>
 <br>
 <br>
+Encouraged by the both multithreading and MPI, we then combined both approaches to see if we could achieve further speedup, and in doing so achieve the targets we had set out with. Using an MPI of Size 13 and multithreading with > 10 threads, we were successfully able to achieve even our most ambition target. We observe here again that we get diminishing returns after 10 threads.
+
+Our best performing case is MPI of Size 13 with 100 threads, with an execution time of 4.288 seconds, achieving a speedup of 120x compared to the initial run on Discovery, and a speedup of 274x compared to the time taken on our local machine.
 
 <!-- ## Work Distribution
 
