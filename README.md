@@ -8,8 +8,8 @@ We are interested in optimizing the study of computational agroceology by simula
 3. [Test Scenario](#test-scenario)
 2. [Methods](#methods)
 6. [Results](#results)
-7. [Acknowledgement](#acknowledgment)
 8. [Future Work](#future-work)
+7. [Acknowledgement](#acknowledgment)
 8. [Resources and Platform](#resources-and-platform)
 
 ## Introduction
