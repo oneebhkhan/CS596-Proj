@@ -23,7 +23,7 @@ Therefore, our goal is to optimize the rendering of incident light for multiple 
 ## Test Scenario
 <figure>
 <img src="assets/colored_field.gif" alt="animation" width="750"/>
-<figcaption aligh='center'>360 degree view of a field with 500 plant objects</figcaption>
+<figcaption align='center'>360 degree view of a field with 500 plant objects</figcaption>
 </figure>
 <p> 360 degree view of a field with 500 plant objects </p>
 
