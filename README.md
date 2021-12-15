@@ -83,10 +83,10 @@ Our team is very grateful to **Tomek Osinski** from CARC who was of great help i
 ## Resources and Platform
 
 * Python
-	* [MPI4Py] (https://mpi4py.readthedocs.io/en/stable/mpi4py.html)
-	* [concurrent.futures] (https://docs.python.org/3/library/concurrent.futures.html)
-* [Mitsuba2] (https://mitsuba2.readthedocs.io/en/latest/generated/plugins.html#bsdfs)
-* [CARC] (https://www.carc.usc.edu/user-information/user-guides/hpc-basics/slurm-templates)
+	* [MPI4Py](https://mpi4py.readthedocs.io/en/stable/mpi4py.html)
+	* [concurrent.futures](https://docs.python.org/3/library/concurrent.futures.html)
+* [Mitsuba2](https://mitsuba2.readthedocs.io/en/latest/generated/plugins.html#bsdfs)
+* [CARC](https://www.carc.usc.edu/user-information/user-guides/hpc-basics/slurm-templates)
 * C++
 
 ## Tasks
