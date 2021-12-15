@@ -21,10 +21,10 @@ In order to render a scene and calculate incident light, we are using Mitsuba 2,
 Therefore, our goal is to optimize the rendering of incident light for multiple plant objects in the Mitsuba environment using parallel computing techniques as discussed in CSCI 596.
 
 ## Test Scenario
-<figure>
+
 <img src="assets/colored_field.gif" alt="animation" width="750"/>
-<figcaption align='center'>360 degree view of a field with 500 plant objects</figcaption>
-</figure>
+|:--:|
+| <b>Image Credits - Fig.2 - 4K Mountains Wallpaper</b>|
 <p> 360 degree view of a field with 500 plant objects </p>
 
 <p></p>
