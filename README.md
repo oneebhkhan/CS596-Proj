@@ -63,18 +63,21 @@ In the visual table above, we have serial-time on the horizontal axis and the pa
 ## Results
 
 ### Multi-threading Paralllel Mitsuba Rendering
+<img src="assets/multithreading_results.png" alt="multithreading results" width="300"/>
 
+### MPI Paralllel Mitsuba Rendering
+<img src="assets/mpi_results.png" alt="mpi results" width="300"/>
 
 ### Hybrid MPI + Multi-threading Parallel Mitsuba Rendering
+<img src="assets/hybrid_mpi_multithreading_results.png" alt="hybrid mpi multithreading results" width="300"/>
 
-
-## Work Distribution
+<!-- ## Work Distribution
 
 **Oneeb:** Create test case, organize code and work on parallelism in python code.
 
 **Iris:** Generate results and visualizations in plots. Working on parallelism using MPI4py and multi-threading and processes in python. 
 
-**Armaghan:** Profiling Python and C++ Code. Multithreading for Mitsuba.
+**Armaghan:** Profiling Python and C++ Code. Multithreading for Mitsuba. -->
 
 ## Acknowledgment
 

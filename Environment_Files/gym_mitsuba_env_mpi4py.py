@@ -211,7 +211,7 @@ class AgroEnv(gym.Env):
 			# input()
 			
 			# for RADMETER_INDEX in range(1, 5):
-			total_thread_num = 50
+			total_thread_num = 500
 			with ThreadPoolExecutor(max_workers=total_thread_num) as executor:
 				futures_iter = []
 				for thread_num in range(1, total_thread_num+1):
