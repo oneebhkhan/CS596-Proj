@@ -1,16 +1,6 @@
-TEST Scenario (1 Step w/ 500 Plants ~12 Render Cycles)
+TEST Scenario (1 Step w/ 500 Plants ~13 Render Cycles)
 Execution Times:
 On Local Machine (Macbook i7): 1174
-
---ntasks=64 --cpus-per-task=1 mitsuba("gpu_rgb")
-On GPU: --cuda_trace_append error? 
-
---ntasks=1 --cpus-per-task=64
-W/ 500 threads: 79.479 
-W/ 50 threads: 79.098
-
---nodes=12 --ntasks=12 --cpus-per-task=64
-W/ 50 threads: 10.212
 
 # Multithreading Results
 --ntasks=64 --cpus-per-task=1
@@ -47,3 +37,14 @@ W/ 64 threads: 5.221, 4.358
 W/ 100 threads: 5.3358, 4.288
 W/ 200 threads: 5.183, 4.345
 W/ 500 threads: 5.607, 4.424
+
+# Trials
+--ntasks=64 --cpus-per-task=1 mitsuba("gpu_rgb")
+On GPU: --cuda_trace_append error? 
+
+--ntasks=1 --cpus-per-task=64
+W/ 500 threads: 79.479 
+W/ 50 threads: 79.098
+
+--nodes=12 --ntasks=12 --cpus-per-task=64
+W/ 50 threads: 10.212

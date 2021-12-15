@@ -64,16 +64,23 @@ Our main script is _episode\_timing.py_ which loads are test scenario and then c
 
 ## Results
 
+All of the timing results can be found in _Speedup\_Test/Timing\_Data.txt_.
+
 ### Multi-threading Parallel Mitsuba Rendering
-<!-- add Interactive Job Command -->
+
 <img src="assets/multithreading_results.png" alt="multithreading results" width="400"/>
+<b>Fig.3 - Multithreaded Implementation Timing Results</b>
+<br>
+<br>
+
+Using the _concurrent.future
 
 #### Profiling
 
-<div>
-	<img align="center" src="assets/multiple_threads1.png" alt="multiple_threads" width="700"/>
-</div>
-
+<img align="center" src="assets/multiple_threads1.png" alt="multiple_threads" width="700"/>
+<b>Fig.4 - Profiling Results on Multithreaded Implementation</b>
+<br>
+<br>
 <p>
 In the visual table above, we have serial-time on the horizontal axis and the parallel execution on the vertical-axis. The functions being executed in parallel are work_func() instances and each such function represents a single thread exectuing in parallel. The serial functions are render() and step(). The render() function is executed for each hour of the day. Both function render() and step() are executing in serial time and can be seen on the 	    horizontal axis. Some observations regarding the multiple threads execution:	
 </p>
@@ -83,10 +90,16 @@ In the visual table above, we have serial-time on the horizontal axis and the pa
 ### MPI Paralllel Mitsuba Rendering
 <!-- add Interactive Job Command -->
 <img src="assets/mpi_results.png" alt="mpi results" width="400"/>
+<b>Fig.5 - MPI Implementation Timing Results</b>
+<br>
+<br>
 
 ### Hybrid MPI + Multi-threading Parallel Mitsuba Rendering
 <!-- add Interactive Job Command -->
 <img src="assets/hybrid_mpi_multithreading_results.png" alt="hybrid mpi multithreading results" width="400"/>
+<b>Fig.6 - Hybrid MPI + Multithreaded Implementation Timing Results</b>
+<br>
+<br>
 
 <!-- ## Work Distribution
 
