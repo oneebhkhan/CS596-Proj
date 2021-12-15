@@ -107,7 +107,7 @@ We see a near 2x speed up when we go from MPI Size 12 to Size 13, since in there
 <b>Fig.6 - Hybrid MPI + Multithreaded Implementation Timing Results</b>
 <br>
 <br>
-Encouraged by the both multithreading and MPI, we then combined both approaches to see if we could achieve further speedup, and in doing so achieve the targets we had set out with. Using an MPI of Size 13 and multithreading with > 10 threads, we were successfully able to achieve even our most ambition target. We observe here again that we get diminishing returns after 10 threads.
+Encouraged by both the multithreading and MPI implementations, we then combined both approaches to see if we could achieve further speedup, and in doing so achieve the targets we had set out with. Using an MPI of Size 13 and multithreading with > 10 threads, we were successfully able to achieve even our most ambition target. We observe here again that we get diminishing returns after 10 threads.
 <br>
 <br>
 
@@ -123,14 +123,7 @@ Our best performing case is MPI of Size 13 with 100 threads, with an execution t
 
 ## Future Work
 
-- [x] Implement Parallel Programming Techniques 
-	- [x] Implement Multithreading
-		- [ ] Determine reason for segmentation faults
-	- [x] Implement MPI  
-		- [x] Determine why rank 6 takes longer
-		- [ ] Aggregate values back in rank 0
-		- [ ] Determine xml error reason
-		- [ ] Be able to run multiple times
+We were unsuccessful in being able to run Mitsuba on a GPU, due to build errors. We expect considerable improvement in execution time, if we successfully deploy it on a GPU device, so moving forward that will be the focus. Additionally, there is some debugging to be done before we can port this code over to our RL environment.
 
 ## Acknowledgment
 
