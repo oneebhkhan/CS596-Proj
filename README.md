@@ -112,6 +112,7 @@ We see a near 2x speed up when we go from MPI Size 12 to Size 13, since there ar
 Encouraged by both the multithreading and MPI implementations, we then combined both approaches to see if we could achieve further speedup, and in doing so achieve the targets we had set out with. Using an MPI of Size 13 and multithreading with > 10 threads, we were successfully able to achieve even our most ambitious target. We observe here again that we get diminishing returns after 10 threads.
 <br>
 <br>
+
 Our best performing case is MPI of Size 13 with 100 threads, with an execution time of 4.288 seconds, achieving a speedup of __120x__ compared to the initial run on Discovery of 515 seconds, and a speedup of __274x__ compared to the time taken on our local machine, 1174 seconds.
 
 <!-- ## Work Distribution
