@@ -131,7 +131,7 @@ We were unsuccessful in being able to run Mitsuba on a GPU, due to build errors.
 
 Our team is very grateful to **Tomek Osinski** from CARC who was of great help in setting up the Mitsuba library for us on Discovery, a process which turned out to be rather convoluted and complicated.
 
-Thanks to Prof. Aiichiro Nakano and his teaching staff for discussing novel techinical concepts that inspired us to work on this project, and produce these results as part of the semester project for CSCI596: Scientific Computing & Visualization course at the University of Southern California
+Thanks to Prof. Aiichiro Nakano and his teaching staff for discussing novel techinical concepts that inspired us to work on this project, and produce these results as part of the semester project for CSCI596: Scientific Computing & Visualization course at the University of Southern California.
 
 ## Project Members
 
